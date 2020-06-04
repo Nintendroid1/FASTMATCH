@@ -1,6 +1,8 @@
 #include "../include/Grid.hpp"
 
-Grid::Grid(double delta, double epsilon) {
+//For G
+Grid::Grid(double d, double epsilon) {
+    delta = d;
     sideLength = (int)ceil((epsilon*delta)/(6*sqrt(2)));
 }
 
@@ -22,7 +24,9 @@ vector<Cell> Grid::getSubset(int index) {
 
 }
 
+//Construct bipartite graph
 //Add an edge in the graph between two points (a,b) of in different cells if it exists in the respective subgraph
+//delta is at least the bottleneck distance, so H will have a perfect matching
 void Grid::checkAddEdge(Cell curr, vector<Vertex> allVertices) {
     //Check if current cell is active
     if(curr.isActive(allVertices)) {
@@ -32,6 +36,11 @@ void Grid::checkAddEdge(Cell curr, vector<Vertex> allVertices) {
         //Iterate through sublist
         for(int i=0; i < currSub.size(); i++) {
             Cell thisSub = currSub[i];
+
+            //Same cell
+            if(curr.getCellIndex() == thisSub.getCellIndex()) {
+                continue;
+            }
             
             //TODO Other way?
             vector<Vertex> currB = curr.getVertexB();
@@ -46,3 +55,4 @@ void Grid::checkAddEdge(Cell curr, vector<Vertex> allVertices) {
         }
     }
 }
+

@@ -4,7 +4,8 @@
 #include <iostream>
 #include <stdio.h>
 #include <vector>
-#include "Point.hpp"
+#include "Grid.hpp"
+#include "GridPrime.hpp"
 using namespace std;
 
 class GridGen {
@@ -19,9 +20,12 @@ class GridGen {
         //G be a grid on the bounding square S
         GridGen(double e, vector<double> ar);
 
-        //Iterate through possible delta values from alphaRange
+        //Iterate through possible delta values from alphaRange to generate G
         //TODO: Return type?
-        void generate();
+        void generateG();
+
+        //Generate G' based on r value (assumed perfect square and > 1)
+        void generateGPrime(int r);
 };
 
 #endif
