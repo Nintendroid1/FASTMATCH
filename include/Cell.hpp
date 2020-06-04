@@ -3,10 +3,10 @@
 
 #include <stdio.h>
 #include <vector>
-//#include <bits/stdc++.h> 
+#include <math.h>
 
 #include "Vertex.hpp"
-
+#include "Status.hpp"
 using namespace std;
 
 /*
@@ -14,25 +14,34 @@ using namespace std;
 * Contained in a Grid
 */
 
-class Cell{
+class Cell {
     private:
-        vector<Vertex> vertices;
-        vector<Vertex> vertexA;
-        vector<Vertex> vertexB;
-        int cellIndex;
+        //Centerpoint of respective class
+        Vertex vertexA;
+        Vertex vertexB;
 
+        //Location of cell within grid
+        int rowIndex;
+        int colIndex;
+
+        //sideLength of cell
+        double cellLength;
+
+        //Indicates if empty, single class, or both classes
+        Status cellStatus;
     public:
-        Cell(int i);
+        Cell(int row, int col, double sideLength);
         
+        void createCenter();
+
         //Add vertex to overall list and based on specific class
         void addVertex(Vertex v);
-            
-        //Cell is active if (A \union B) \intersect Cell is nonempty
-        bool isActive(vector<Vertex> allVertices);
 
-        vector<Vertex> getAllVertices() {return vertices;}
-        vector<Vertex> getVertexA() {return vertexA;}
-        vector<Vertex> getVertexB() {return vertexB;}
-        int getCellIndex() {return cellIndex;}
+        Vertex getVertexA() {return vertexA;}
+        Vertex getVertexB() {return vertexB;}
+        int getRowIndex() {return rowIndex;}
+        int getColIndex() {return colIndex;}
+        double getCellLength() {return cellLength;}
+        Status getCellStatus() {return cellStatus;}
 };
 #endif

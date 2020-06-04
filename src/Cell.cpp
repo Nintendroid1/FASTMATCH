@@ -1,31 +1,49 @@
 #include "../include/Cell.hpp"
 
-Cell::Cell(int i) {
-    cellIndex = i;
+Cell::Cell(int row, int col, double sideLength) 
+    : vertexA(A, 0.0,0.0), vertexB(B, 0.0,0.0) {
+    rowIndex = row;
+    colIndex = col;
+    cellLength = sideLength;
+    
+    //Snap points to center
+    double midLength = sideLength/2;
+    double centerX = (rowIndex * sideLength) + midLength;
+    double centerY = (colIndex * sideLength) + midLength;
+
+    //Initialize weight 0 since no vertices yet
+    vertexA = Vertex(A, centerX, centerY);
+    vertexB = Vertex(B, centerX, centerY);
+}
+
+void Cell::createCenter() {
+    
 }
 
 //Add vertex to overall list and based on specific class
 void Cell::addVertex(Vertex v) {
-    vertices.push_back(v);
     if(v.getLabel() == A) {
-        vertexA.push_back(v);
-    }
-    else { //v.label == Label.B
-        vertexB.push_back(v);
-    }
-}
+        //At least one vertex of class A
+        vertexA.updateWeight();
 
-//Cell is active if (A \union B) \intersect Cell is nonempty
-//TODO set_intersection?
-bool Cell::isActive(vector<Vertex> allVertices) {
-    for(int i=0; i < vertices.size(); i++) {
-        for(int j=0; j < allVertices.size(); j++) {
-            if(vertices[i].getX() == allVertices[i].getX() &&
-                vertices[i].getY() == allVertices[i].getY() &&
-                vertices[i].getLabel() == allVertices[i].getLabel()) {
-                    return true;
-                }
+        //Update Cell's Status relative to A
+        if(cellStatus == NONE) {
+            cellStatus = ASET;
+        }
+        else if(cellStatus == BSET) {
+            cellStatus = ALL;
         }
     }
-    return false;
+    else {//v.getLabel() == B
+        //At least one vertex of class B
+        vertexB.updateWeight();
+
+        //Update Cell's Status relative to B
+        if(cellStatus == NONE) {
+            cellStatus = BSET;
+        }
+        else if(cellStatus == ASET) {
+            cellStatus = ALL;
+        }
+    }
 }
