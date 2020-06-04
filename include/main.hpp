@@ -3,8 +3,9 @@
 
 #include <iostream>
 #include <stdio.h>
+#include <math.h>
 #include "GridGen.hpp"
-#include "Vertex.hpp"
+#include "Cell.hpp"
 
 using namespace std;
 

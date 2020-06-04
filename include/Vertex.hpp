@@ -1,7 +1,6 @@
 #ifndef VERTEX
 #define VERTEX
 
-#include <iostream>
 #include <stdio.h>
 #include <vector>
 #include "Point.hpp"
@@ -9,6 +8,7 @@ using namespace std;
 
 /*
 * Vertex is a subclass of Point
+* Has information of label and edges
 */
 enum Label {A, B};
 

@@ -6,6 +6,7 @@ using namespace std;
 
 /*
 * This implementation assumes a 2-D representation
+* Can be extended to higher dimension
 */
 class Point {
     private:
