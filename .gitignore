@@ -1,1 +1,2 @@
-fastmatch
+/build
+*.o

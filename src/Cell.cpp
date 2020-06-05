@@ -5,19 +5,18 @@ Cell::Cell(int row, int col, double sideLength)
     rowIndex = row;
     colIndex = col;
     cellLength = sideLength;
-    
+    cellStatus = NONE;
+}
+
+void Cell::createCenter() {
     //Snap points to center
-    double midLength = sideLength/2;
-    double centerX = (rowIndex * sideLength) + midLength;
-    double centerY = (colIndex * sideLength) + midLength;
+    double midLength = cellLength/2;
+    double centerX = (rowIndex * cellLength) + midLength;
+    double centerY = (colIndex * cellLength) + midLength;
 
     //Initialize weight 0 since no vertices yet
     vertexA = Vertex(A, centerX, centerY);
     vertexB = Vertex(B, centerX, centerY);
-}
-
-void Cell::createCenter() {
-    
 }
 
 //Add vertex to overall list and based on specific class
