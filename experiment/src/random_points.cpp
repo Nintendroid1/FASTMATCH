@@ -37,7 +37,13 @@ void genRandPoints(double delta, int n, int distNum) {
             y = dist(gen);
         }
         while(x < lower_bound || x > upper_bound || y < lower_bound || y > upper_bound);
-        dataFile << x << " " << y << endl; 
+
+        if(i % 2 == 0) {
+            dataFile << "A: " << x << " " << y << endl; 
+        }
+        else {
+            dataFile << "B: " << x << " " << y << endl; 
+        }
     }
 
     dataFile.close();
