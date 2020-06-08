@@ -2,6 +2,7 @@
 #define POINT
 
 #include <stdio.h>
+#include <algorithm>
 using namespace std;
 
 /*
@@ -15,9 +16,9 @@ class Point {
     
     public:
         Point(double tempX, double tempY);
-        double getX(){return x;}
-        double getY(){return y;}
-        bool compareX(Point p2);
-        bool compareY(Point p2);
+        double getX() const {return x;}
+        double getY() const {return y;}
+        static bool compareX(Point const & p1, Point const & p2);
+        static bool compareY(Point const & p1, Point const & p2);
 };
 #endif

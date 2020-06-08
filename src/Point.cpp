@@ -7,12 +7,12 @@ Point::Point(double tempX, double tempY) {
      y = tempY;
  }
 
-//Returns true if this point has a greater x value
-bool Point::compareX(Point p2) {
-    return x >= p2.getX();
+//Returns true if this point has a lesser x value
+bool Point::compareX(Point const & p1, Point const & p2) {
+    return p1.getX() < p2.getX();
 }
 
-//Returns true if this point has a greater x value
-bool Point::compareY(Point p2) {
-    return y >= p2.getY();
+//Returns true if this point has a lesser y value
+bool Point::compareY(Point const & p1, Point const & p2) {
+    return p1.getY() < p2.getY();
 }

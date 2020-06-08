@@ -8,6 +8,7 @@ Cell::Cell(int row, int col, double sideLength)
     cellStatus = NONE;
 }
 
+//TODO Can't be negative
 void Cell::createCenter() {
     //Snap points to center
     double midLength = cellLength/2;

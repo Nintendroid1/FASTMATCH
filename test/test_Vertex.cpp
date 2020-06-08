@@ -30,3 +30,19 @@ TEST_CASE( "Add Edge to Vertex", "[vertex]" ) {
     REQUIRE( v1.getEdges()[0].getWeight() == 0 );
 
 }
+
+TEST_CASE( "Vertex Sort", "[vertex]" ) {
+    Vertex v1(A, 1.0, 2.0);
+    Vertex v2(B, 2.0, 1.4);
+    vector<Vertex> vertices;
+    vertices.push_back(v1);
+    vertices.push_back(v2);
+
+    sort(vertices.begin(), vertices.end(), Point::compareX);
+    REQUIRE( vertices[0].getX() == v1.getX() );
+    REQUIRE( vertices[1].getX() == v2.getX() );
+
+    sort(vertices.begin(), vertices.end(), Point::compareY);
+    REQUIRE( vertices[0].getY() == v2.getY() );
+    REQUIRE( vertices[1].getY() == v1.getY() );
+}

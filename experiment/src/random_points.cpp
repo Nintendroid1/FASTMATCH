@@ -28,7 +28,8 @@ void genRandPoints(double delta, int n, int distNum) {
     //         break;
     // }
 
-    //Generate n points within bounding square */
+    //Generate n points within bounding square
+    //Equal points from both classes
     for(int i = 0; i < n; i++) {
         double x = 0.0;
         double y = 0.0;
