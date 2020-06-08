@@ -1,22 +1,21 @@
-// #include "../include/GridGen.hpp"
-// /*
-// Based on the epsilon-approximate bottleneck matching algorithm
-// presented by Lahn and Raghevendra (SoCG 2019)
-//  */
-// GridGen::GridGen(double e, vector<double> ar){
-//     epsilon = e;
-//     alphaRange = ar;
-// }
-// void GridGen::generateG() {
-//     //beta_star <= delta <= (1 + epsilon/3)beta_star
-//     // for(double delta : alphaRange) {
-//         //Grid currGraph = new Grid(delta, epsilon);
-//     // }
-//     cout << "Test" << endl;
-// }
+#include "../include/GridGen.hpp"
 
-// //Generate G' based on r value (assumed perfect square and > 1)
-// void GridGen::generateGPrime(int r) {
+GridGen::GridGen(double e, vector<double> ar){
+    epsilon = e;
+    alphaRange = ar;
+}
 
-// }
+//Iterate through possible delta values from alphaRange to generate G
+//TODO Parallize
+void GridGen::iterateAlpha(vector<Vertex> allVertices) {
+    for(int i=0; i< (int)alphaRange.size(); i++) {
+        Grid g = generateG(alphaRange[i], allVertices);
+    }
+}
+
+Grid GridGen::generateG(double d, vector<Vertex> allVertices) {
+    Grid g = Grid(d, epsilon);
+    g.populateCells(allVertices);
+    return g;
+}
 

@@ -1,4 +1,4 @@
-#include "../include/catch.hpp"
+#include "catch.hpp"
 #include "../include/Cell.hpp"
 
 TEST_CASE( "Cell generated", "[cell]" ) {

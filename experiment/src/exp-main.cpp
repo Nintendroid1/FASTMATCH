@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
     double delta = 1.0;
     double epsilon = 0.01;
     double n = 100;
-
+    
     //Normal Distribution
     int distNum = 1;
 

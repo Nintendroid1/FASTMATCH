@@ -1,4 +1,4 @@
-#include "../include/catch.hpp"
+#include "catch.hpp"
 #include "../include/Point.hpp"
 
 TEST_CASE( "Point generated", "[point]" ) {

@@ -7,11 +7,18 @@ void genRandPoints(double delta, int n, int distNum) {
     double lower_bound = -delta;
     double upper_bound = delta;
 
+    ofstream dataFile;
+    char buffer[100];
+    snprintf(buffer, sizeof(buffer), "data/nd_%.2f_%d.txt", delta, n);
+    dataFile.open(buffer);
+    dataFile << "Normal Distribution with Delta = " << delta << " with " << n << " points." << endl;
+
     //https://en.cppreference.com/w/cpp/numeric/random
     random_device rd{};
     mt19937 gen{rd()};
 
     normal_distribution<double> dist;
+    //TODO Different distributions
     // switch(distNum) {
     //     case 0:
     //         uniform_real_distribution<double> dist;
@@ -19,7 +26,6 @@ void genRandPoints(double delta, int n, int distNum) {
     //     case 1:
     //         normal_distribution<double> dist;
     //         break;
-    //     //TODO Different distributions
     // }
 
     //Generate n points within bounding square */
@@ -31,6 +37,8 @@ void genRandPoints(double delta, int n, int distNum) {
             y = dist(gen);
         }
         while(x < lower_bound || x > upper_bound || y < lower_bound || y > upper_bound);
-        cout << "p" << i+1 << "(" << x << "," << y << ")" << endl; 
+        dataFile << x << ", " << y << endl; 
     }
+
+    dataFile.close();
 }

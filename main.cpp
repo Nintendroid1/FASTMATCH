@@ -8,8 +8,9 @@
 // }
 
 /*
-* Main runner for developing test cases and running Hopcroft-Karp Algorithm
+* Main runner for running Hopcroft-Karp Algorithm
 * and the new FASTMATCH algorithm  
+* with test cases generated from experiments
 */
 int main(int argc, char *argv[]) {
 

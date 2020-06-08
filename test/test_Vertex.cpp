@@ -1,4 +1,4 @@
-#include "../include/catch.hpp"
+#include "catch.hpp"
 #include "../include/Vertex.hpp"
 
 TEST_CASE( "Vertex generated", "[vertex]" ) {

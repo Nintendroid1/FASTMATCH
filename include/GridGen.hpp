@@ -1,30 +1,39 @@
-// #ifndef GRIDGEN
-// #define GRIDGEN
+#ifndef GRIDGEN
+#define GRIDGEN
 
-// #include <iostream>
-// #include <stdio.h>
-// #include <vector>
-// #include "Grid.hpp"
-// using namespace std;
+#include <iostream>
+#include <stdio.h>
+#include <vector>
+#include "Grid.hpp"
+using namespace std;
 
-// class GridGen {
-//     private:
-//         double epsilon;
-//         //Calculate range of [alpha/n, alpha]
-//         vector<double> alphaRange;
+class GridGen {
+    private:
+        //Error
+        double epsilon;
+
+        //beta_star <= delta <= (1 + epsilon/3)beta_star
+        double delta;
         
-//         //alpha => n-approximation of the bottleneck distance
-//         void calculateAlpha();
-//     public:
-//         //G be a grid on the bounding square S
-//         GridGen(double e, vector<double> ar);
+        //Calculate range of [alpha/n, alpha]
+        vector<double> alphaRange;
 
-//         //Iterate through possible delta values from alphaRange to generate G
-//         //TODO: Return type?
-//         void generateG();
+        //alpha => n-approximation of the bottleneck distance
+        void calculateAlpha();
+    public:
+        //G be a grid on the bounding square S
+        GridGen(double e, vector<double> ar); //Multiple delta values to check
+        GridGen(double e, double d); //Single delta value to check
 
-//         //Generate G' based on r value (assumed perfect square and > 1)
-//         void generateGPrime(int r);
-// };
+        //Iterate through possible delta values from alphaRange to generate G
+        void iterateAlpha(vector<Vertex> allVertices);
 
-// #endif
+        Grid generateG(double d, vector<Vertex> allVertices);
+
+        double getEpsilon() {return epsilon;}
+        double getDelta() {return delta;}
+        vector<double> getAlphaRange() {return alphaRange;}
+
+};
+
+#endif

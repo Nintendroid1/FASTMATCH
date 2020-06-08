@@ -15,7 +15,7 @@ class Grid {
     private:
         //Generate cells xi based on sidelength
         vector<Cell> cells;
-        int sideLength;
+        double sideLength;
         double delta;
 
     public:
@@ -24,5 +24,8 @@ class Grid {
 
         void populateCells(vector<Vertex> allVertices);
 
+        vector<Cell> getCells() {return cells;}
+        double getSideLength() {return sideLength;}
+        double getDelta() {return delta;}
 };
 #endif
