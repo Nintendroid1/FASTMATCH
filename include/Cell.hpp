@@ -24,13 +24,15 @@ class Cell {
         int rowIndex;
         int colIndex;
 
+        double delta;
+
         //sideLength of cell
         double cellLength;
 
         //Indicates if empty, single class, or both classes
         Status cellStatus;
     public:
-        Cell(int row, int col, double sideLength);
+        Cell(int row, int col, double d, double sideLength);
         
         void createCenter();
 

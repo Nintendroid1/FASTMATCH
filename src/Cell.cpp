@@ -1,9 +1,10 @@
 #include "../include/Cell.hpp"
 
-Cell::Cell(int row, int col, double sideLength) 
+Cell::Cell(int row, int col, double d, double sideLength) 
     : vertexA(A, 0.0,0.0), vertexB(B, 0.0,0.0) {
     rowIndex = row;
     colIndex = col;
+    delta = d;
     cellLength = sideLength;
     cellStatus = NONE;
 }
@@ -12,8 +13,10 @@ Cell::Cell(int row, int col, double sideLength)
 void Cell::createCenter() {
     //Snap points to center
     double midLength = cellLength/2;
-    double centerX = (rowIndex * cellLength) + midLength;
-    double centerY = (colIndex * cellLength) + midLength;
+
+    //Assumes 2delta bounding square
+    double centerX = (-delta) + (rowIndex * cellLength) + midLength;
+    double centerY = (-delta) + (colIndex * cellLength) + midLength;
 
     //Initialize weight 0 since no vertices yet
     vertexA = Vertex(A, centerX, centerY);

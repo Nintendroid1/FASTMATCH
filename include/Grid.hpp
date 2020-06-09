@@ -2,6 +2,8 @@
 #define GRID
 
 #include <stdio.h>
+#include <iostream>
+#include <algorithm>
 #include <vector>
 #include <math.h> 
 #include "Cell.hpp"
@@ -24,8 +26,8 @@ class Grid {
 
         void populateCells(vector<Vertex> allVertices);
 
-        vector<Cell> getCells() {return cells;}
-        double getSideLength() {return sideLength;}
-        double getDelta() {return delta;}
+        vector<Cell> getCells() const {return cells;}
+        double getSideLength() const {return sideLength;}
+        double getDelta() const {return delta;}
 };
 #endif
