@@ -16,6 +16,7 @@ using namespace std;
 class Grid {
     private:
         //Generate cells xi based on sidelength
+        //Implicitly sorted by the cell's center x-coordinate
         vector<Cell> cells;
         double sideLength;
         double delta;
@@ -25,6 +26,7 @@ class Grid {
         Grid(double d, double epsilon);
 
         void populateCells(vector<Vertex> allVertices);
+        void formEdges();
 
         vector<Cell> getCells() const {return cells;}
         double getSideLength() const {return sideLength;}

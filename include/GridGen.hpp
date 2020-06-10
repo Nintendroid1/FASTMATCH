@@ -30,9 +30,9 @@ class GridGen {
 
         Grid generateG(double d, vector<Vertex> allVertices);
 
-        double getEpsilon() {return epsilon;}
-        double getDelta() {return delta;}
-        vector<double> getAlphaRange() {return alphaRange;}
+        double getEpsilon() const {return epsilon;}
+        double getDelta() const {return delta;}
+        vector<double> getAlphaRange() const {return alphaRange;}
 
 };
 

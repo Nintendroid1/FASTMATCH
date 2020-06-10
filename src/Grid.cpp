@@ -74,8 +74,32 @@ void Grid::populateCells(vector<Vertex> allVertices) {
             }
         }
     }
-    // cout << allVertices[1].getX() << endl;
-    // cout << allVertices.size() << endl;
-    // cout << cells.size() << endl;
+}
+
+void Grid::formEdges() {
+    //Iterate through cells
+    //Implicitly sorted by x
+    for(int i = 0; i < (int)cells.size(); i++) {
+        Cell curr = cells[i];
+
+        //Look through neighborhood for edges
+        int start = max(0, i-2);
+        int end = min(i+2, (int) cells.size());
+
+        for(int j = start; j < end; j++) {
+            Cell neighbor = cells[j];
+            //Ignore when center point doesn't exist
+            if(curr.getCellStatus() == ASET) {  
+                curr.getVertexA().addEdge(neighbor.getVertexB());
+            }
+            else if(curr.getCellStatus() == BSET) {
+                curr.getVertexB().addEdge(neighbor.getVertexA());
+            }
+            else {//curr.getCellStatus() == ALL
+                curr.getVertexA().addEdge(neighbor.getVertexB());
+                curr.getVertexB().addEdge(neighbor.getVertexA());
+            }
+        }
+    }
 }
 

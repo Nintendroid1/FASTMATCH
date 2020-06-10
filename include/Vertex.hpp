@@ -27,6 +27,6 @@ class Vertex : public Point {
         void addEdge(Vertex v);
         void updateWeight();
 
-        int getWeight() {return weight;}
+        int getWeight() const {return weight;}
 };
 #endif

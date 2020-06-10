@@ -39,11 +39,14 @@ class Cell {
         //Add vertex to overall list and based on specific class
         void addVertex(Vertex v);
 
-        Vertex getVertexA() {return vertexA;}
-        Vertex getVertexB() {return vertexB;}
-        int getRowIndex() {return rowIndex;}
-        int getColIndex() {return colIndex;}
-        double getCellLength() {return cellLength;}
-        Status getCellStatus() {return cellStatus;}
+        static bool compareCenterX(Cell const & c1, Cell const & c2);
+        static bool compareCenterY(Cell const & c1, Cell const & c2);
+
+        Vertex getVertexA() const {return vertexA;}
+        Vertex getVertexB() const {return vertexB;}
+        int getRowIndex() const {return rowIndex;}
+        int getColIndex() const {return colIndex;}
+        double getCellLength() const {return cellLength;}
+        Status getCellStatus() const {return cellStatus;}
 };
 #endif

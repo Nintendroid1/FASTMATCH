@@ -50,3 +50,13 @@ void Cell::addVertex(Vertex v) {
         }
     }
 }
+
+//Returns true if this cell has a lesser x value
+bool Cell::compareCenterX(Cell const & c1, Cell const & c2) {
+    return Point::compareX(c1.getVertexA(), c2.getVertexA()); //A or B is fine, same coordinates
+}
+
+//Returns true if this cell has a lesser y value
+bool Cell::compareCenterY(Cell const & c1, Cell const & c2) {
+    return Point::compareY(c1.getVertexA(), c2.getVertexA()); //A or B is fine, same coordinates
+}
