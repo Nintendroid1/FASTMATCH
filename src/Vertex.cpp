@@ -1,5 +1,5 @@
 #include "../include/Vertex.hpp"
-
+#include <iostream>
 Vertex::Vertex(Label l, double x, double y) : Point(x, y) {
     label = l;
     weight = 0;

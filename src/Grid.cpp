@@ -80,24 +80,27 @@ void Grid::formEdges() {
     //Iterate through cells
     //Implicitly sorted by x
     for(int i = 0; i < (int)cells.size(); i++) {
-        Cell curr = cells[i];
+        Cell& curr = cells[i];
 
         //Look through neighborhood for edges
         int start = max(0, i-2);
         int end = min(i+2, (int) cells.size());
 
         for(int j = start; j < end; j++) {
+            if(i == j) {
+                continue;
+            }
             Cell neighbor = cells[j];
             //Ignore when center point doesn't exist
             if(curr.getCellStatus() == ASET) {  
-                curr.getVertexA().addEdge(neighbor.getVertexB());
+                curr.modVertexA().addEdge(neighbor.getVertexB());
             }
             else if(curr.getCellStatus() == BSET) {
-                curr.getVertexB().addEdge(neighbor.getVertexA());
+                curr.modVertexB().addEdge(neighbor.modVertexA());
             }
             else {//curr.getCellStatus() == ALL
-                curr.getVertexA().addEdge(neighbor.getVertexB());
-                curr.getVertexB().addEdge(neighbor.getVertexA());
+                curr.modVertexA().addEdge(neighbor.getVertexB());
+                curr.modVertexB().addEdge(neighbor.getVertexA());
             }
         }
     }

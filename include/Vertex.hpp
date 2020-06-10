@@ -23,10 +23,10 @@ class Vertex : public Point {
     public:
         Vertex(Label l, double x, double y);
         Label getLabel() {return label;}
-        vector<Vertex> getEdges() {return edges;}
         void addEdge(Vertex v);
         void updateWeight();
 
+        vector<Vertex> getEdges() const {return edges;}
         int getWeight() const {return weight;}
 };
 #endif

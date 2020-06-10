@@ -33,3 +33,33 @@ TEST_CASE( "Grid populateCells", "[grid]" ) {
     REQUIRE( g.getCells()[1].getVertexA().getY() ==  centerY2);
 
 }
+
+TEST_CASE( "Grid formEdges", "[grid]" ) {
+    Grid g(4.0, 0.01);
+
+    double l = ((4.0*0.01)/(6*sqrt(2)));
+    vector<Vertex> vs;
+    Vertex v1(A, 2.0, 1.0);
+    Vertex v2(B, 3.0, 1.4);
+    vs.push_back(v1);
+    vs.push_back(v2);
+    g.populateCells(vs);
+
+    g.formEdges();
+
+    double centerX1 = -4.0 + g.getCells()[0].getRowIndex() * l + l/2;
+    double centerY1 = -4.0 + g.getCells()[0].getColIndex() * l + l/2;
+    double centerX2 = -4.0 + g.getCells()[1].getRowIndex() * l + l/2;
+    double centerY2 = -4.0 + g.getCells()[1].getColIndex() * l + l/2;
+
+
+    vector<Vertex> edges1 = g.getCells()[0].modVertexB().getEdges();
+    vector<Vertex> edges2 = g.getCells()[1].modVertexB().getEdges();
+
+    REQUIRE( edges1[0].getX() ==  centerX2);
+    REQUIRE( edges1[0].getY() ==  centerY2);
+
+    REQUIRE( edges2[0].getX() ==  centerX1);
+    REQUIRE( edges2[0].getY() ==  centerY1);
+
+}

@@ -42,6 +42,9 @@ class Cell {
         static bool compareCenterX(Cell const & c1, Cell const & c2);
         static bool compareCenterY(Cell const & c1, Cell const & c2);
 
+        Vertex& modVertexA() {return vertexA;}
+        Vertex& modVertexB() {return vertexB;}
+
         Vertex getVertexA() const {return vertexA;}
         Vertex getVertexB() const {return vertexB;}
         int getRowIndex() const {return rowIndex;}
