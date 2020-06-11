@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <algorithm>
+#include <math.h>
 using namespace std;
 
 /*
@@ -21,4 +22,7 @@ class Point {
         static bool compareX(Point const & p1, Point const & p2);
         static bool compareY(Point const & p1, Point const & p2);
 };
+
+double calcDist(Point const & p1, Point const & p2);
+
 #endif
