@@ -24,6 +24,9 @@ class Cell {
         int rowIndex;
         int colIndex;
 
+        double centerX;
+        double centerY;
+
         double delta;
 
         //sideLength of cell
@@ -51,5 +54,7 @@ class Cell {
         int getColIndex() const {return colIndex;}
         double getCellLength() const {return cellLength;}
         Status getCellStatus() const {return cellStatus;}
+        double getCenterX() const {return centerX;}
+        double getCenterY() const {return centerY;}
 };
 #endif

@@ -55,6 +55,7 @@ bool Match::bfs() {
     // // If we could come back to NIL using alternating path of distinct 
     // // vertices then there is an augmenting path 
     // return (dist[NIL] != INF); 
+    return true;
 } 
 
 // Returns true if there is an augmenting path beginning with free vertex u 
@@ -86,5 +87,5 @@ bool Match::dfs(Vertex v) {
     //     dist[u] = INF; 
     //     return false; 
     // } 
-    // return true; 
+    return true; 
 }

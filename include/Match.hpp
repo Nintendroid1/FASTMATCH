@@ -29,6 +29,6 @@ class Match {
         bool bfs();
         bool dfs(Vertex v);
 
-}
+};
 
 #endif

@@ -15,8 +15,8 @@ void Cell::createCenter() {
     double midLength = cellLength/2;
 
     //Assumes 2delta bounding square
-    double centerX = (-delta) + (rowIndex * cellLength) + midLength;
-    double centerY = (-delta) + (colIndex * cellLength) + midLength;
+    centerX = (-delta) + (rowIndex * cellLength) + midLength;
+    centerY = (-delta) + (colIndex * cellLength) + midLength;
 
     //Initialize weight 0 since no vertices yet
     vertexA = Vertex(A, centerX, centerY);

@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
             else if(string(argv[1]) == "FAST") {
                 //TODO: FASTMATCH implementation
             }
-            
+
             double e = 0.01;
             vector<double> ar;
             double d = 1.0;

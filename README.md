@@ -11,6 +11,7 @@ Implementation based on the [SoCG 2019 Paper](https://drops.dagstuhl.de/opus/vol
 
 ## Documentation
 [UML Diagram](https://app.lucidchart.com/documents/edit/326ed988-99a0-45b4-977b-5ea26e415a4c/0_0)
+[White Paper](https://www.overleaf.com/read/sfvjzsjdqqtn)
 
 ## Unit Testing
 Unit tests are done through the [Catch 2 Framework](https://github.com/catchorg/Catch2)

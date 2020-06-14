@@ -17,18 +17,30 @@ class Grid {
     private:
         //Generate cells xi based on sidelength
         //Implicitly sorted by the cell's center x-coordinate
-        vector<Cell> cells;
+        vector<Cell> sortCellX;
+        vector<Cell> sortCellY;
         double sideLength;
         double delta;
+        vector<Vertex> allVertices;
+        vector<Vertex> sortVerticesX;
+        vector<Vertex> sortVerticesY;
+        vector<double> intervalX;
+        vector<double> intervalY;
 
+        int bsBoundX(int l, int r, double x);
+        int bsBoundY(int l, int r, double y);
+        int bsCellX(int l, int r, double x);
+        int bsCellY(int l, int r, double y);   
     public:
         //For G
-        Grid(double d, double epsilon);
+        Grid(double d, double epsilon, vector<Vertex> aV);
 
-        void populateCells(vector<Vertex> allVertices);
+        void determineBoundingSquare();
+        void populateCells();
         void formEdges();
+        void findNeighbors();
 
-        vector<Cell> getCells() const {return cells;}
+        vector<Cell> getCells() const {return sortCellX;}
         double getSideLength() const {return sideLength;}
         double getDelta() const {return delta;}
 };
