@@ -26,7 +26,7 @@ class Grid {
         double startX;
         double startY;
 
-        vector<Vertex*> allVertices;
+        vector<Vertex> allVertices;
         vector<Vertex> sortVerticesX;
         vector<Vertex> sortVerticesY;
         vector<double> intervalX;

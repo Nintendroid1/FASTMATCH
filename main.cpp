@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
         {
             string data;
             getline(inputFile, data);//Info header
-            vector<Vertex*> allVertices;
+            vector<Vertex> allVertices;
             while(getline(inputFile, data)) {
                 istringstream iss(data);
                 string label, xCoor, yCoor;
