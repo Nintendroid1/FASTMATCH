@@ -68,8 +68,8 @@ TEST_CASE( "Grid formEdges", "[grid]" ) {
     double centerY2 = startY + g.getCells()[1].getColIndex() * l + l/2;
 
 
-    vector<Vertex> edges1 = g.getCells()[0].modVertexA().getEdges();
-    vector<Vertex> edges2 = g.getCells()[1].modVertexB().getEdges();
+    vector<Vertex> edges1 = g.getCells()[0].getVertexA().getEdges();
+    vector<Vertex> edges2 = g.getCells()[1].getVertexB().getEdges();
 
     REQUIRE( edges1[0].getX() ==  centerX2);
     REQUIRE( edges1[0].getY() ==  centerY2);

@@ -53,6 +53,16 @@ void Cell::addVertex(Vertex v) {
     }
 }
 
+//Add edge between this center's vertex A
+void Cell::formEdgeA(Vertex vB) {
+    vertexA.addEdge(vB);
+}
+
+//Add edge between this center's vertex B
+void Cell::formEdgeB(Vertex vA) {
+    vertexB.addEdge(vA);
+}
+
 //Returns true if this cell has a lesser x value
 bool Cell::compareCenterX(Cell const & c1, Cell const & c2) {
     return Point::compareX(c1.getVertexA(), c2.getVertexA()); //A or B is fine, same coordinates

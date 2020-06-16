@@ -42,12 +42,11 @@ class Cell {
 
         //Add vertex to overall list and based on specific class
         void addVertex(Vertex v);
+        void formEdgeA(Vertex vB);
+        void formEdgeB(Vertex vA);
 
         static bool compareCenterX(Cell const & c1, Cell const & c2);
         static bool compareCenterY(Cell const & c1, Cell const & c2);
-
-        Vertex& modVertexA() {return vertexA;}
-        Vertex& modVertexB() {return vertexB;}
 
         Vertex getVertexA() const {return vertexA;}
         Vertex getVertexB() const {return vertexB;}

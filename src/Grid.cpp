@@ -202,7 +202,7 @@ int Grid::bsBoundY(int l, int r, double y) {
 void Grid::formEdges() {
     //Iterate through cells
     //Implicitly sorted by x
-    cout << "Forming Edge with X" << endl;
+    // cout << "Forming Edge with X" << endl;
     for(int i = 0; i < (int)sortCellX.size(); i++) {
         Cell& curr = sortCellX[i];
 
@@ -217,18 +217,18 @@ void Grid::formEdges() {
             Cell neighbor = sortCellX[j];
             //Ignore when center point doesn't exist
             if(curr.getCellStatus() == ASET) {  
-                curr.modVertexA().addEdge(neighbor.getVertexB());
+                curr.formEdgeA(neighbor.getVertexB());
             }
             else if(curr.getCellStatus() == BSET) {
-                curr.modVertexB().addEdge(neighbor.getVertexA());
+                curr.formEdgeB(neighbor.getVertexA());
             }
             else {//curr.getCellStatus() == ALL
-                curr.modVertexA().addEdge(neighbor.getVertexB());
-                curr.modVertexB().addEdge(neighbor.getVertexA());
+                curr.formEdgeA(neighbor.getVertexB());
+                curr.formEdgeB(neighbor.getVertexA());
             }
         }
     }
-    cout << "Forming Edge with Y" << endl;
+    // cout << "Forming Edge with Y" << endl;
     sortCellY = sortCellX;
     sort(sortCellY.begin(), sortCellY.end(), Cell::compareCenterY);
     for(int i = 0; i < (int)sortCellY.size(); i++) {
@@ -246,14 +246,14 @@ void Grid::formEdges() {
             Cell neighbor = sortCellY[j];
             //Ignore when center point doesn't exist
             if(curr.getCellStatus() == ASET) {  
-                curr.modVertexA().addEdge(neighbor.getVertexB());
+                curr.formEdgeA(neighbor.getVertexB());
             }
             else if(curr.getCellStatus() == BSET) {
-                curr.modVertexB().addEdge(neighbor.getVertexA());
+                curr.formEdgeB(neighbor.getVertexA());
             }
             else {//curr.getCellStatus() == ALL
-                curr.modVertexA().addEdge(neighbor.getVertexB());
-                curr.modVertexB().addEdge(neighbor.getVertexA());
+                curr.formEdgeA(neighbor.getVertexB());
+                curr.formEdgeB(neighbor.getVertexA());
             }
         }
     }
@@ -266,7 +266,7 @@ int Grid::bsCellX(int l, int r, double x) {
     int m = l + (r - l) / 2;
 
     while (l <= r) { 
-        cout << x << " : " << m << endl;
+        // cout << x << " : " << m << endl;
         m = l + (r - l) / 2; 
   
         // Check if x is present at mid 
