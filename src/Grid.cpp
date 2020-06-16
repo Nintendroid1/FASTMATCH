@@ -17,39 +17,33 @@ Grid::Grid(double d, double epsilon, vector<Vertex> aV) {
 //Determine Bounding square based on points
 void Grid::determineBoundingSquare() {
     //TODO: Round?
-    double minX = round(sortVerticesX.front().getX());
-    double maxX = round(sortVerticesX.back().getX());
-    double minY = round(sortVerticesY.front().getY());
-    double maxY = round(sortVerticesY.back().getY());
+    double minX = floor(sortVerticesX.front().getX());
+    double maxX = ceil(sortVerticesX.back().getX());
+    double minY = floor(sortVerticesY.front().getY());
+    double maxY = ceil(sortVerticesY.back().getY());
     
-    double minLength = 0;
-    double maxLength = 0;
-
     //Take the longer side
-    if(abs(minX - maxX) > abs(minY - maxY)) {
-        minLength = minX;
-        maxLength = maxX;
-    } else {
-        minLength = minY;
-        maxLength = maxY;  
-    }
+    double slack = abs(abs(minX - maxX) - abs(minY - maxY))/2;
 
     //Calculated intervals
-    double startX = minLength;
-    double startY = minLength;
+    startX = minX - slack;
+    startY = minY - slack;
+    double endX = maxX + slack;
+    double endY = maxY + slack;
 
     intervalX.push_back(startX);
     intervalY.push_back(startY);
 
-
-    while(startX < maxLength) {
-        startX += sideLength;
-       intervalX.push_back(min(startX, delta));
+    double insert = startX;
+    while(insert < endX) {
+        insert += sideLength;
+        intervalX.push_back(min(insert, endX));
     }
 
-    while(startY < maxLength) {
-        startY += sideLength;
-        intervalY.push_back(min(startY, delta));
+    insert = startY;
+    while(insert < endY) {
+        insert += sideLength;
+        intervalY.push_back(min(insert, endY));
     }
 }
 // //Assign points to respective cells
@@ -120,7 +114,7 @@ void Grid::populateCells() {
         }
         if(!added) {
             //Create cell if it doesn't already exist
-            Cell newCell(j, k, delta, sideLength);
+            Cell newCell(j, k, startX, startY, sideLength);
             newCell.createCenter();
             newCell.addVertex(curr);
             // cout << "New Cell: " << j << " " << k << endl;
@@ -133,6 +127,8 @@ void Grid::populateCells() {
         }
     }
     // cout << allVertices.size() << " " << sortCellX.size() << endl;
+    intervalX.clear();
+    intervalY.clear();
 }
 
 //Iterative binary search for row index in bounding square
@@ -211,8 +207,8 @@ void Grid::formEdges() {
 
         //Find neighbors within 2delta neighborhood, horizontal
         int start = bsCellX(0, (int) sortCellX.size(), curr.getCenterX() - delta);
-        int end =   bsCellX(0, (int) sortCellX.size(), curr.getCenterX() + delta);
-
+        int end =   min(bsCellX(0, (int) sortCellX.size(), curr.getCenterX() + delta) + 1, (int) sortCellX.size());
+    
         for(int j = start; j < end; j++) {
             if(i == j) {
                 continue;
@@ -231,15 +227,14 @@ void Grid::formEdges() {
             }
         }
     }
-
-    vector<Cell> sortCellY(sortCellX);
+    sortCellY = sortCellX;
     sort(sortCellY.begin(), sortCellY.end(), Cell::compareCenterY);
     for(int i = 0; i < (int)sortCellY.size(); i++) {
         Cell& curr = sortCellY[i];
 
         //Find neighbors within 2delta neighborhood, vertical
         int start = bsCellY(0, (int) sortCellY.size(), curr.getCenterY() - delta);
-        int end =   bsCellY(0, (int) sortCellY.size(), curr.getCenterY() + delta);
+        int end =   min(bsCellY(0, (int) sortCellY.size(), curr.getCenterY() + delta)+1, (int)sortCellY.size());
 
         //TODO Repeats?
         for(int j = start; j < end; j++) {

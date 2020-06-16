@@ -19,9 +19,14 @@ class Grid {
         //Implicitly sorted by the cell's center x-coordinate
         vector<Cell> sortCellX;
         vector<Cell> sortCellY;
+        
         double sideLength;
         double delta;
-        vector<Vertex> allVertices;
+
+        double startX;
+        double startY;
+
+        vector<Vertex*> allVertices;
         vector<Vertex> sortVerticesX;
         vector<Vertex> sortVerticesY;
         vector<double> intervalX;

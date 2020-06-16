@@ -30,14 +30,18 @@ TEST_CASE( "Grid populateCells", "[grid]" ) {
     g.determineBoundingSquare();
     g.populateCells();
 
-    double centerX1 = -4.0 + g.getCells()[0].getRowIndex() * l + l/2;
-    double centerY1 = -4.0 + g.getCells()[0].getColIndex() * l + l/2;
-    double centerX2 = -4.0 + g.getCells()[1].getRowIndex() * l + l/2;
-    double centerY2 = -4.0 + g.getCells()[1].getColIndex() * l + l/2;
-    REQUIRE( g.getCells()[0].getVertexA().getX() ==  centerX1);
-    REQUIRE( g.getCells()[0].getVertexA().getY() ==  centerY1);
-    REQUIRE( g.getCells()[1].getVertexA().getX() ==  centerX2);
-    REQUIRE( g.getCells()[1].getVertexA().getY() ==  centerY2);
+    double startX = 2.0 - abs(abs(2.0 - 3.0) - abs(1.0 - 2.0))/2;
+    double startY = 1.0 - abs(abs(2.0 - 3.0) - abs(1.0 - 2.0))/2;
+
+    double centerX1 = startX + g.getCells()[0].getRowIndex() * l + l/2;
+    double centerY1 = startY + g.getCells()[0].getColIndex() * l + l/2;
+    double centerX2 = startX + g.getCells()[1].getRowIndex() * l + l/2;
+    double centerY2 = startY + g.getCells()[1].getColIndex() * l + l/2;
+
+    REQUIRE( g.getCells()[0].getCenterX() ==  centerX1);
+    REQUIRE( g.getCells()[0].getCenterY() ==  centerY1);
+    REQUIRE( g.getCells()[1].getCenterX() ==  centerX2);
+    REQUIRE( g.getCells()[1].getCenterY() ==  centerY2);
 
 }
 
@@ -54,21 +58,23 @@ TEST_CASE( "Grid formEdges", "[grid]" ) {
     g.populateCells();
 
 
-    // g.formEdges();
+    g.formEdges();
+    double startX = 2.0 - abs(abs(2.0 - 3.0) - abs(1.0 - 2.0))/2;
+    double startY = 1.0 - abs(abs(2.0 - 3.0) - abs(1.0 - 2.0))/2;
 
-    // double centerX1 = -4.0 + g.getCells()[0].getRowIndex() * l + l/2;
-    // double centerY1 = -4.0 + g.getCells()[0].getColIndex() * l + l/2;
-    // double centerX2 = -4.0 + g.getCells()[1].getRowIndex() * l + l/2;
-    // double centerY2 = -4.0 + g.getCells()[1].getColIndex() * l + l/2;
+    double centerX1 = startX + g.getCells()[0].getRowIndex() * l + l/2;
+    double centerY1 = startY + g.getCells()[0].getColIndex() * l + l/2;
+    double centerX2 = startX + g.getCells()[1].getRowIndex() * l + l/2;
+    double centerY2 = startY + g.getCells()[1].getColIndex() * l + l/2;
 
 
-    // vector<Vertex> edges1 = g.getCells()[0].modVertexB().getEdges();
-    // vector<Vertex> edges2 = g.getCells()[1].modVertexB().getEdges();
+    vector<Vertex> edges1 = g.getCells()[0].modVertexA().getEdges();
+    vector<Vertex> edges2 = g.getCells()[1].modVertexB().getEdges();
 
-    // REQUIRE( edges1[0].getX() ==  centerX2);
-    // REQUIRE( edges1[0].getY() ==  centerY2);
+    REQUIRE( edges1[0].getX() ==  centerX2);
+    REQUIRE( edges1[0].getY() ==  centerY2);
 
-    // REQUIRE( edges2[0].getX() ==  centerX1);
-    // REQUIRE( edges2[0].getY() ==  centerY1);
+    REQUIRE( edges2[0].getX() ==  centerX1);
+    REQUIRE( edges2[0].getY() ==  centerY1);
 
 }

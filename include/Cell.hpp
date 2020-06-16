@@ -27,7 +27,8 @@ class Cell {
         double centerX;
         double centerY;
 
-        double delta;
+        double minX;
+        double minY;
 
         //sideLength of cell
         double cellLength;
@@ -35,7 +36,7 @@ class Cell {
         //Indicates if empty, single class, or both classes
         Status cellStatus;
     public:
-        Cell(int row, int col, double d, double sideLength);
+        Cell(int row, int col, double mX, double mY, double sideLength);
         
         void createCenter();
 

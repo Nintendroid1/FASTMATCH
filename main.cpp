@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
         {
             string data;
             getline(inputFile, data);//Info header
-            vector<Vertex> allVertices;
+            vector<Vertex*> allVertices;
             while(getline(inputFile, data)) {
                 istringstream iss(data);
                 string label, xCoor, yCoor;
@@ -54,6 +54,7 @@ int main(int argc, char *argv[]) {
             ar.push_back(1.0);
             GridGen gg = GridGen(e, ar);
             gg.generateG(d, allVertices);
+            allVertices.clear();
         }
         inputFile.close();
     }
