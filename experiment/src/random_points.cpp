@@ -2,15 +2,14 @@
 
 //Generate points in the bounding square using normal distribution
 //num = total number of points to generate
-void genRandPoints(double delta, int n, int distNum) {
+void genRandPoints(double boundary, int n, int distNum) {
     //2 delta
-    double lower_bound = -delta;
-    double upper_bound = delta;
+    double lower_bound = -boundary;
+    double upper_bound = boundary;
 
-    ofstream dataFile;
     char buffer[100];
     snprintf(buffer, sizeof(buffer), "data/nd_%.2f_%d.txt", delta, n);
-    dataFile.open(buffer);
+    ofstream dataFile(buffer);
     dataFile << "Normal Distribution with Delta = " << delta << " with " << n << " points." << endl;
 
     //https://en.cppreference.com/w/cpp/numeric/random

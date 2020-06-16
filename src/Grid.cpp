@@ -96,7 +96,7 @@ void Grid::populateCells() {
         Vertex curr = sortVerticesX[i];
 
         //Find row index in Grid
-        int j = bsBoundX(0, intervalX.size() - 1, curr.getX());
+        int j = bsBoundX(i, intervalX.size() - 1, curr.getX());
                 
         //Find col index in Grid
         int k = bsBoundY(0, intervalY.size() - 1, curr.getY());
@@ -202,12 +202,13 @@ int Grid::bsBoundY(int l, int r, double y) {
 void Grid::formEdges() {
     //Iterate through cells
     //Implicitly sorted by x
+    cout << "Forming Edge with X" << endl;
     for(int i = 0; i < (int)sortCellX.size(); i++) {
         Cell& curr = sortCellX[i];
 
         //Find neighbors within 2delta neighborhood, horizontal
-        int start = bsCellX(0, (int) sortCellX.size(), curr.getCenterX() - delta);
-        int end =   min(bsCellX(0, (int) sortCellX.size(), curr.getCenterX() + delta) + 1, (int) sortCellX.size());
+        int start = bsCellX(0, i, curr.getCenterX() - delta);
+        int end =   bsCellX(i, (int) sortCellX.size(), curr.getCenterX() + delta) + 1;
     
         for(int j = start; j < end; j++) {
             if(i == j) {
@@ -227,14 +228,15 @@ void Grid::formEdges() {
             }
         }
     }
+    cout << "Forming Edge with Y" << endl;
     sortCellY = sortCellX;
     sort(sortCellY.begin(), sortCellY.end(), Cell::compareCenterY);
     for(int i = 0; i < (int)sortCellY.size(); i++) {
         Cell& curr = sortCellY[i];
 
         //Find neighbors within 2delta neighborhood, vertical
-        int start = bsCellY(0, (int) sortCellY.size(), curr.getCenterY() - delta);
-        int end =   min(bsCellY(0, (int) sortCellY.size(), curr.getCenterY() + delta)+1, (int)sortCellY.size());
+        int start = bsCellY(0, i, curr.getCenterY() - delta);
+        int end =   bsCellY(i, (int) sortCellY.size(), curr.getCenterY() + delta)+1;
 
         //TODO Repeats?
         for(int j = start; j < end; j++) {
@@ -264,6 +266,7 @@ int Grid::bsCellX(int l, int r, double x) {
     int m = l + (r - l) / 2;
 
     while (l <= r) { 
+        cout << x << " : " << m << endl;
         m = l + (r - l) / 2; 
   
         // Check if x is present at mid 
