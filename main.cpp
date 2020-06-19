@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
 
             double e = 0.01;
             vector<double> ar;
-            double d = 0.5;
+            double d = 0.1;
             ar.push_back(1.0);
             GridGen gg = GridGen(e, ar);
             gg.generateG(d, allVertices);

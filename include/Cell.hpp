@@ -20,6 +20,9 @@ class Cell {
         Vertex vertexA;
         Vertex vertexB;
 
+        vector<Vertex*> edgesA; 
+        vector<Vertex*> edgesB;
+
         //Location of cell within grid
         int rowIndex;
         int colIndex;
@@ -42,8 +45,8 @@ class Cell {
 
         //Add vertex to overall list and based on specific class
         void addVertex(Vertex v);
-        void formEdgeA(Vertex vB);
-        void formEdgeB(Vertex vA);
+        void formEdgeA(Vertex* vB);
+        void formEdgeB(Vertex* vA);
 
         static bool compareCenterX(Cell const & c1, Cell const & c2);
         static bool compareCenterY(Cell const & c1, Cell const & c2);
@@ -56,5 +59,10 @@ class Cell {
         Status getCellStatus() const {return cellStatus;}
         double getCenterX() const {return centerX;}
         double getCenterY() const {return centerY;}
+
+        vector<Vertex*> getEdgesA() const {return edgesA;}
+        vector<Vertex*> getEdgesB() const {return edgesB;}
+        Vertex* getPointerVertexA()  {return &vertexA;}
+        Vertex* getPointerVertexB()  {return &vertexB;}
 };
 #endif

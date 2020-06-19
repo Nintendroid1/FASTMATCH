@@ -202,33 +202,34 @@ int Grid::bsBoundY(int l, int r, double y) {
 void Grid::formEdges() {
     //Iterate through cells
     //Implicitly sorted by x
-    // cout << "Forming Edge with X" << endl;
     for(int i = 0; i < (int)sortCellX.size(); i++) {
         Cell& curr = sortCellX[i];
 
         //Find neighbors within 2delta neighborhood, horizontal
         int start = bsCellX(0, i, curr.getCenterX() - delta);
         int end =   bsCellX(i, (int) sortCellX.size(), curr.getCenterX() + delta) + 1;
-    
+
         for(int j = start; j < end; j++) {
             if(i == j) {
                 continue;
             }
-            Cell neighbor = sortCellX[j];
+            Cell& neighbor = sortCellX[j];
+            Vertex* nA = neighbor.getPointerVertexA();
+            Vertex* nB = neighbor.getPointerVertexB();
+
             //Ignore when center point doesn't exist
             if(curr.getCellStatus() == ASET) {  
-                curr.formEdgeA(neighbor.getVertexB());
+                curr.formEdgeA(nB);
             }
             else if(curr.getCellStatus() == BSET) {
-                curr.formEdgeB(neighbor.getVertexA());
+                curr.formEdgeB(nA);
             }
             else {//curr.getCellStatus() == ALL
-                curr.formEdgeA(neighbor.getVertexB());
-                curr.formEdgeB(neighbor.getVertexA());
+                curr.formEdgeA(nB);
+                curr.formEdgeB(nA);
             }
         }
     }
-    // cout << "Forming Edge with Y" << endl;
     sortCellY = sortCellX;
     sort(sortCellY.begin(), sortCellY.end(), Cell::compareCenterY);
     for(int i = 0; i < (int)sortCellY.size(); i++) {
@@ -243,17 +244,20 @@ void Grid::formEdges() {
             if(i == j) {
                 continue;
             }
-            Cell neighbor = sortCellY[j];
+            Cell& neighbor = sortCellY[j];
+            Vertex* nA = neighbor.getPointerVertexA();
+            Vertex* nB = neighbor.getPointerVertexB();
+
             //Ignore when center point doesn't exist
             if(curr.getCellStatus() == ASET) {  
-                curr.formEdgeA(neighbor.getVertexB());
+                curr.formEdgeA(nB);
             }
             else if(curr.getCellStatus() == BSET) {
-                curr.formEdgeB(neighbor.getVertexA());
+                curr.formEdgeB(nA);
             }
             else {//curr.getCellStatus() == ALL
-                curr.formEdgeA(neighbor.getVertexB());
-                curr.formEdgeB(neighbor.getVertexA());
+                curr.formEdgeA(nB);
+                curr.formEdgeB(nA);
             }
         }
     }

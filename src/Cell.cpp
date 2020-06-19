@@ -54,13 +54,15 @@ void Cell::addVertex(Vertex v) {
 }
 
 //Add edge between this center's vertex A
-void Cell::formEdgeA(Vertex vB) {
-    vertexA.addEdge(vB);
+void Cell::formEdgeA(Vertex* vB) {
+    edgesA.push_back(vB);
+    // cout << "In method " << vB << " " << vB->getX() << endl;
+
 }
 
 //Add edge between this center's vertex B
-void Cell::formEdgeB(Vertex vA) {
-    vertexB.addEdge(vA);
+void Cell::formEdgeB(Vertex* vA) {
+    edgesB.push_back(vA);
 }
 
 //Returns true if this cell has a lesser x value

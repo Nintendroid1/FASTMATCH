@@ -45,6 +45,7 @@ TEST_CASE( "Vertex Sort", "[vertex]" ) {
     sort(vertices.begin(), vertices.end(), Point::compareY);
     REQUIRE( vertices[0].getY() == v2.getY() );
     REQUIRE( vertices[1].getY() == v1.getY() );
+    vertices.clear();
 }
 
 TEST_CASE( "Vertex Distance", "[vertex]" ) {

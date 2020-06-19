@@ -27,6 +27,8 @@ TEST_CASE( "Compare Points", "[point]" ) {
     REQUIRE( points[0].getY() == p1.getY() );
     REQUIRE( points[1].getY() == p3.getY() );
     REQUIRE( points[2].getY() == p2.getY() );
+
+    points.clear();
 }
 
 TEST_CASE( "Point Distance", "[point]" ) {

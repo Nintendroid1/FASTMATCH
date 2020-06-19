@@ -15,6 +15,8 @@ TEST_CASE( "Grid generated", "[grid]" ) {
 
     REQUIRE( g.getDelta() == 2.0 );
     REQUIRE( g.getSideLength() == l );
+
+    vs.clear();
 }
 
 TEST_CASE( "Grid populateCells", "[grid]" ) {
@@ -43,6 +45,7 @@ TEST_CASE( "Grid populateCells", "[grid]" ) {
     REQUIRE( g.getCells()[1].getCenterX() ==  centerX2);
     REQUIRE( g.getCells()[1].getCenterY() ==  centerY2);
 
+    vs.clear();
 }
 
 TEST_CASE( "Grid formEdges", "[grid]" ) {
@@ -68,13 +71,18 @@ TEST_CASE( "Grid formEdges", "[grid]" ) {
     double centerY2 = startY + g.getCells()[1].getColIndex() * l + l/2;
 
 
-    vector<Vertex> edges1 = g.getCells()[0].getVertexA().getEdges();
-    vector<Vertex> edges2 = g.getCells()[1].getVertexB().getEdges();
+    vector<Vertex*> edges1 = g.getCells()[0].getEdgesA();
+    vector<Vertex*> edges2 = g.getCells()[1].getEdgesB();
 
-    REQUIRE( edges1[0].getX() ==  centerX2);
-    REQUIRE( edges1[0].getY() ==  centerY2);
+    // cout << edges1[0] << " " << edges1[0]->getX() << endl;
+    // cout << (edges1[0]) << " " << centerX2 << endl;
+    REQUIRE( edges1[0]->getX() ==  centerX2);
+    REQUIRE( edges1[0]->getY() ==  centerY2);
 
-    REQUIRE( edges2[0].getX() ==  centerX1);
-    REQUIRE( edges2[0].getY() ==  centerY1);
+    REQUIRE( edges2[0]->getX() ==  centerX1);
+    REQUIRE( edges2[0]->getY() ==  centerY1);
 
+    vs.clear();
+    edges1.clear();
+    edges2.clear();
 }
