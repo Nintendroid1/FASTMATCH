@@ -14,8 +14,10 @@ void GridGen::iterateAlpha(vector<Vertex> allVertices) {
 }
 
 Grid GridGen::generateG(double d, vector<Vertex> allVertices) {
-    Grid g = Grid(d, epsilon);
-    g.populateCells(allVertices);
+    Grid g = Grid(d, epsilon, allVertices);
+    g.determineBoundingSquare();
+    g.populateCells();
+    g.formEdges();
     return g;
 }
 

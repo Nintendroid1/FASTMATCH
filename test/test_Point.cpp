@@ -27,4 +27,14 @@ TEST_CASE( "Compare Points", "[point]" ) {
     REQUIRE( points[0].getY() == p1.getY() );
     REQUIRE( points[1].getY() == p3.getY() );
     REQUIRE( points[2].getY() == p2.getY() );
+
+    points.clear();
+}
+
+TEST_CASE( "Point Distance", "[point]" ) {
+    Point p1(-3.0, 2.0);
+    Point p2(1.0, 1.0);
+    double dist = sqrt(pow((-3.0 - 1.0), 2) 
+            + pow((2.0 - 1.0), 2));
+    REQUIRE( calcDist(p1, p2) == dist );
 }

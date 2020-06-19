@@ -13,6 +13,6 @@
 
 using namespace std;
 
-void genRandPoints(double delta, int n, int dist);
+void genRandPoints(double boundary, int n, int dist);
 
 #endif

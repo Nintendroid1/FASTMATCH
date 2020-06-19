@@ -7,7 +7,7 @@
 //TODO Boost options
 int main(int argc, char *argv[]) {
     //Default: unit square, 0.01 error with 100 points
-    double delta = 1.0;
+    double boundary = 1.0;
     double epsilon = 0.01;
     double n = 100;
     
@@ -15,18 +15,18 @@ int main(int argc, char *argv[]) {
     int distNum = 1;
 
     //User specify
-    if(argc == 3) { 
-        delta = atof(argv[1]);
+    if(argc == 4) { 
+        boundary = atof(argv[1]);
         n = atof(argv[2]);
         distNum = atoi(argv[3]);
     }
     else if(argc > 4){
-        cout << "Usage: ./exp_gen [delta] [n] [dist]" << endl;
+        cout << "Usage: ./exp_gen [boundary] [n] [dist]" << endl;
         return 0;
     }
 
-    cout << "Cell Side Length: " << (epsilon*delta)/(6*sqrt(2)) << endl;
-    genRandPoints(delta, n, distNum);
+    cout << "Cell Side Length: " << (epsilon*boundary)/(6*sqrt(2)) << endl;
+    genRandPoints(boundary, n, distNum);
 
     return 0;
 }

@@ -16,3 +16,9 @@ bool Point::compareX(Point const & p1, Point const & p2) {
 bool Point::compareY(Point const & p1, Point const & p2) {
     return p1.getY() < p2.getY();
 }
+
+//Returns euclidean distance between two points
+double calcDist(Point const & p1, Point const & p2) {
+    return sqrt(pow((p1.getX() - p2.getX()), 2) 
+            + pow((p1.getY() - p2.getY()), 2));
+}

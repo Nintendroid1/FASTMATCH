@@ -20,11 +20,18 @@ class Cell {
         Vertex vertexA;
         Vertex vertexB;
 
+        vector<Vertex*> edgesA; 
+        vector<Vertex*> edgesB;
+
         //Location of cell within grid
         int rowIndex;
         int colIndex;
 
-        double delta;
+        double centerX;
+        double centerY;
+
+        double minX;
+        double minY;
 
         //sideLength of cell
         double cellLength;
@@ -32,18 +39,17 @@ class Cell {
         //Indicates if empty, single class, or both classes
         Status cellStatus;
     public:
-        Cell(int row, int col, double d, double sideLength);
+        Cell(int row, int col, double mX, double mY, double sideLength);
         
         void createCenter();
 
         //Add vertex to overall list and based on specific class
         void addVertex(Vertex v);
+        void formEdgeA(Vertex* vB);
+        void formEdgeB(Vertex* vA);
 
         static bool compareCenterX(Cell const & c1, Cell const & c2);
         static bool compareCenterY(Cell const & c1, Cell const & c2);
-
-        Vertex& modVertexA() {return vertexA;}
-        Vertex& modVertexB() {return vertexB;}
 
         Vertex getVertexA() const {return vertexA;}
         Vertex getVertexB() const {return vertexB;}
@@ -51,5 +57,12 @@ class Cell {
         int getColIndex() const {return colIndex;}
         double getCellLength() const {return cellLength;}
         Status getCellStatus() const {return cellStatus;}
+        double getCenterX() const {return centerX;}
+        double getCenterY() const {return centerY;}
+
+        vector<Vertex*> getEdgesA() const {return edgesA;}
+        vector<Vertex*> getEdgesB() const {return edgesB;}
+        Vertex* getPointerVertexA()  {return &vertexA;}
+        Vertex* getPointerVertexB()  {return &vertexB;}
 };
 #endif
