@@ -43,8 +43,7 @@ class Grid {
         void determineBoundingSquare();
         void populateCells();
         void formEdges();
-        void findNeighbors();
-
+        
         vector<Cell> getCells() const {return sortCellX;}
         double getSideLength() const {return sideLength;}
         double getDelta() const {return delta;}
