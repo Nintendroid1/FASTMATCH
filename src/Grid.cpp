@@ -43,47 +43,36 @@ void Grid::populateCells() {
 
         //Calculate interval vertex belongs in
         int k = 0;
+        int originalJ = j;
         double intervalX = startX + (j * sideLength);
         double intervalY = startY + (k * sideLength);
 
-        //Find row index in Grid: (j, minY)
+        //Find row index in Grid
         while(currX <= intervalX && intervalX < endX) {
             j++;
             intervalX = startX + (j * sideLength);
         }
                 
-        //Find col index in Grid: (j, k)
+        //Find col index in Grid
         while(currY <= intervalY && intervalY < endY) {
             k++;
             intervalY = startY + (k * sideLength);
         }
-
-        bool added = false;
-        for(int l = 0; l <(int)sortCellX.size(); l++) {
-            if(sortCellX[l].getRowIndex() == j && sortCellX[l].getColIndex() == k) {
-                //Add to Cell, snapped to center
-                // cout << "Same Cell: " << j << " " << k << endl;
-                // cout << curr.getX() << " " << curr.getY() << endl << endl;
-                sortCellX[l].addVertex(curr);
-                added = true;
-                break;
-            }
+        
+        //Iterating through x values, so if it is in the same cell should have the same j as previous iteration
+        //The most recent cell added should also be the only cell to check for the same k value
+        if(originalJ == j && sortCellX.size() != 0 && sortCellX.back().getColIndex() == k) {
+            //Add to Cell, snapped to center
+            sortCellX.back().addVertex(curr);
         }
-        if(!added) {
+        else {
             //Create cell if it doesn't already exist
             Cell newCell(j, k, startX, startY, sideLength);
             newCell.createCenter();
             newCell.addVertex(curr);
-            // cout << "New Cell: " << j << " " << k << endl;
-            // cout << "Point: " << curr.getX() << " " << curr.getY() << endl;
-            // cout << "Celllength: " << sideLength << endl;
-            // cout << "j = " << j << " k = " << k << endl;
-            // cout << "Interval: " << intervalX[j] << " " << intervalY[k] << endl;
-            // cout << "Cell: " << newCell.getCenterX() << " " << newCell.getCenterY() << endl << endl;
             sortCellX.push_back(newCell);
         }
     }
-    // cout << allVertices.size() << " " << sortCellX.size() << endl;
 }
 
 void Grid::formEdges() {
