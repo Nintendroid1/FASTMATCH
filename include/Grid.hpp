@@ -25,12 +25,12 @@ class Grid {
 
         double startX;
         double startY;
+        double endX;
+        double endY;
 
         vector<Vertex> allVertices;
         vector<Vertex> sortVerticesX;
         vector<Vertex> sortVerticesY;
-        vector<double> intervalX;
-        vector<double> intervalY;
 
         int bsBoundX(int l, int r, double x);
         int bsBoundY(int l, int r, double y);

@@ -3,8 +3,8 @@
  * Parent class that holds the x and y coordinate
  */
 Point::Point(double tempX, double tempY) {
-     x = tempX;
-     y = tempY;
+    x = tempX;
+    y = tempY;
  }
 
 //Returns true if this point has a lesser x value

@@ -1,91 +1,102 @@
 #include "../include/Match.hpp"
 
+Match::Match(vector<Vertex> vs) {
+    vertices = vs;
+}
+
 // Returns true if there is an augmenting path, else returns 
 // false 
 bool Match::bfs() { 
-    // queue<Vertex> Q; //an Vertex queue 
+    queue<Vertex> Q;
   
-    // // First layer of vertices (set distance as 0) 
-    // for (int u=1; u<=nA; u++) 
-    // { 
-    //     // If this is a free vertex, add it to queue 
-    //     if (pairU[u]==NIL) 
-    //     { 
-    //         // u is not matched 
-    //         dist[u] = 0; 
-    //         Q.push(u); 
-    //     } 
+    // First layer of vertices (set distance as 0) 
+    for (int i=0; i < (int)vertices.size(); i++) { 
+        Vertex& v = vertices[i];
+
+        //Split by class
+        if(v.getLabel() == B) {
+            continue;
+        }
+        // If this is a free vertex, add it to queue 
+        if (v.isFree()) { 
+            // u is not matched 
+            v.setDistance(0); 
+            Q.push(v); 
+        } 
+        else {
+            // Else set distance as infinite so that this vertex 
+            // is considered next time 
+            v.setDistance(INF); 
+        }
+    } 
   
-    //     // Else set distance as infinite so that this vertex 
-    //     // is considered next time 
-    //     else dist[u] = INF; 
-    // } 
+    // Initialize distance to NIL as infinite 
+    shortestDist = INF; 
   
-    // // Initialize distance to NIL as infinite 
-    // dist[NIL] = INF; 
+    // Q is going to contain vertices of left side only.  
+    while (!Q.empty()) { 
+        // Dequeue a vertex 
+        Vertex& v = Q.front(); 
+        Q.pop(); 
   
-    // // Q is going to contain vertices of left side only.  
-    // while (!Q.empty()) 
-    // { 
-    //     // Dequeue a vertex 
-    //     int u = Q.front(); 
-    //     Q.pop(); 
+        // If this node is not NIL and can provide a shorter path to NIL 
+        if (v.getDistance() < shortestDist) { 
+            vector<Vertex> edges = v.getEdges();
+            
+            // Get all adjacent vertices of the dequeued vertex v 
+            for (int i=0; i < (int)edges.size(); i++) { 
+                Vertex u = edges[i]; 
+                // cout << (edges[0]).getX() << endl; //TODO WHY is first vertex's x value invalid?
+
+                if (u.isFree()) { 
+                    shortestDist = v.getDistance() + 1;
+                }
+                else if (u.getDistance() == INF) {
+                    // Consider the pair and add it to queue 
+                    u.setDistance(v.getDistance() + 1); 
+                    Q.push(*u.getMatch());
+                } 
+                // cout << "V: " << v.getLabel() << " (" << v.getX() << ", " << v.getY() << ")" << endl;
+                // cout << "U: " << u.getLabel() << " (" << u.getX() << ", " << u.getY() << ")" << endl << endl; 
+            } 
+        } 
+    } 
   
-    //     // If this node is not NIL and can provide a shorter path to NIL 
-    //     if (dist[u] < dist[NIL]) 
-    //     { 
-    //         // Get all adjacent vertices of the dequeued vertex u 
-    //         list<int>::iterator i; 
-    //         for (i=adj[u].begin(); i!=adj[u].end(); ++i) 
-    //         { 
-    //             int v = *i; 
-  
-    //             // If pair of v is not considered so far 
-    //             // (v, pairV[V]) is not yet explored edge. 
-    //             if (dist[pairV[v]] == INF) 
-    //             { 
-    //                 // Consider the pair and add it to queue 
-    //                 dist[pairV[v]] = dist[u] + 1; 
-    //                 Q.push(pairV[v]); 
-    //             } 
-    //         } 
-    //     } 
-    // } 
-  
-    // // If we could come back to NIL using alternating path of distinct 
-    // // vertices then there is an augmenting path 
-    // return (dist[NIL] != INF); 
-    return true;
+    // If we could come back to NIL using alternating path of distinct 
+    // vertices then there is an augmenting path 
+    return (shortestDist != INF); 
 } 
 
-// Returns true if there is an augmenting path beginning with free vertex u 
+// Returns true if there is an augmenting path beginning with free vertex v 
 bool Match::dfs(Vertex v) { 
-    // if (u != NULL) 
-    // { 
-    //     vector<Vertex>::iterator i; 
-    //     vector<Vertex> edgesU = u.getEdges();
-    //     for (i=edgesU.begin(); i!=edgesU.end(); ++i) 
-    //     { 
-    //         // Adjacent to u 
-    //         Vertex v = *i; 
-  
-    //         // Follow the distances set by BFS 
-    //         if (dist[pairB[v]] == dist[u]+1) 
-    //         { 
-    //             // If dfs for pair of v also returns 
-    //             // true 
-    //             if (dfs(pairB[v]) == true) 
-    //             { 
-    //                 pairB[v] = u; 
-    //                 pairA[u] = v; 
-    //                 return true; 
-    //             } 
-    //         } 
-    //     } 
-  
-    //     // If there is no augmenting path beginning with u. 
-    //     dist[u] = INF; 
-    //     return false; 
-    // } 
-    return true; 
+    if (&v == NULL) {  
+        return true;
+    }
+    vector<Vertex> edges = v.getEdges(); //TODO Iterator?
+    
+    for (int i = 0; i < (int) edges.size(); i++) { 
+        // Adjacent to v 
+        Vertex u = edges[i]; 
+        
+        double nextDist;
+        if(u.isFree()) {
+            nextDist = shortestDist;
+        }
+        else {
+            nextDist = u.getMatch()->getDistance();
+        }
+
+        // Follow the distances set by BFS 
+        if (nextDist == v.getDistance() + 1) { 
+            // If dfs for pair of v also returns 
+            // true 
+            if (u.isFree() || dfs(*u.getMatch())) { 
+                u.setMatch(&v);
+                return true; 
+            } 
+        }  
+    }
+    // If there is no augmenting path beginning with v. 
+    v.setDistance(INF); 
+    return false;  
 }

@@ -25,136 +25,54 @@ void Grid::determineBoundingSquare() {
     //Take the longer side
     double slack = abs(abs(minX - maxX) - abs(minY - maxY))/2;
 
-    //Calculated intervals
+    //Transform lower left bounding square to be origin (0,0) => (minX, minY)
     startX = minX - slack;
     startY = minY - slack;
-    double endX = maxX + slack;
-    double endY = maxY + slack;
-
-    intervalX.push_back(startX);
-    intervalY.push_back(startY);
-
-    double insert = startX;
-    while(insert < endX) {
-        insert += sideLength;
-        intervalX.push_back(min(insert, endX));
-    }
-
-    insert = startY;
-    while(insert < endY) {
-        insert += sideLength;
-        intervalY.push_back(min(insert, endY));
-    }
+    endX = maxX + slack;
+    endY = maxY + slack;    
 }
 
 //Assign points to respective cells
 void Grid::populateCells() {
     //Scan through all the vertices
+    int j = 0;
     for(int i=0; i < (int)sortVerticesX.size(); i++) {
         Vertex curr = sortVerticesX[i];
+        double currX = curr.getX();
+        double currY = curr.getY();
+
+        //Calculate interval vertex belongs in
+        int k = 0;
+        int originalJ = j;
+        double intervalX = startX + (j * sideLength);
+        double intervalY = startY + (k * sideLength);
 
         //Find row index in Grid
-        int j = bsBoundX(i, intervalX.size() - 1, curr.getX());
+        while(currX <= intervalX && intervalX < endX) {
+            j++;
+            intervalX = startX + (j * sideLength);
+        }
                 
         //Find col index in Grid
-        int k = bsBoundY(0, intervalY.size() - 1, curr.getY());
-
-        bool added = false;
-        for(int l = 0; l <(int)sortCellX.size(); l++) {
-            if(sortCellX[l].getRowIndex() == j && sortCellX[l].getColIndex() == k) {
-                //Add to Cell, snapped to center
-                // cout << "Same Cell: " << j << " " << k << endl;
-                // cout << curr.getX() << " " << curr.getY() << endl << endl;
-                sortCellX[l].addVertex(curr);
-                added = true;
-                break;
-            }
+        while(currY <= intervalY && intervalY < endY) {
+            k++;
+            intervalY = startY + (k * sideLength);
         }
-        if(!added) {
+        
+        //Iterating through x values, so if it is in the same cell should have the same j as previous iteration
+        //The most recent cell added should also be the only cell to check for the same k value
+        if(originalJ == j && sortCellX.size() != 0 && sortCellX.back().getColIndex() == k) {
+            //Add to Cell, snapped to center
+            sortCellX.back().addVertex(curr);
+        }
+        else {
             //Create cell if it doesn't already exist
             Cell newCell(j, k, startX, startY, sideLength);
             newCell.createCenter();
             newCell.addVertex(curr);
-            // cout << "New Cell: " << j << " " << k << endl;
-            // cout << "Point: " << curr.getX() << " " << curr.getY() << endl;
-            // cout << "Celllength: " << sideLength << endl;
-            // cout << "j = " << j << " k = " << k << endl;
-            // cout << "Interval: " << intervalX[j] << " " << intervalY[k] << endl;
-            // cout << "Cell: " << newCell.getCenterX() << " " << newCell.getCenterY() << endl << endl;
             sortCellX.push_back(newCell);
         }
     }
-    // cout << allVertices.size() << " " << sortCellX.size() << endl;
-    intervalX.clear();
-    intervalY.clear();
-}
-
-//Iterative binary search for row index in bounding square
-int Grid::bsBoundX(int l, int r, double x) { 
-    //Start at Center
-    int m = l + (r - l) / 2;
-
-    while (l <= r) { 
-        m = l + (r - l) / 2; 
-  
-        // Check if x is present at mid 
-        if (intervalX[m] == x) {
-            return m; 
-        }
-  
-        // If x greater, ignore left half 
-        else if (intervalX[m] < x) {
-            l = m + 1; 
-        }
-        // If x is smaller, ignore right half 
-        else {
-            r = m - 1; 
-        }
-    } 
-
-    if(m < 0) {
-        return 0;
-    }
-    else if (m > (int)intervalX.size() - 1) {
-        return intervalX.size() - 1;
-    }
-
-    //Only care about interval x exists in 
-    return m; 
-} 
-
-//Iterative binary search for row index in bounding square
-int Grid::bsBoundY(int l, int r, double y) { 
-    //Start at center
-    int m = l + (r - l) / 2;
-
-    while (l <= r) { 
-        m = l + (r - l) / 2; 
-  
-        // Check if x is present at mid 
-        if (intervalY[m] == y) {
-            return m; 
-        }
-  
-        // If x greater, ignore left half 
-        else if (intervalY[m] < y) {
-            l = m + 1; 
-        }
-  
-        // If x is smaller, ignore right half 
-        else {
-            r = m - 1; 
-        }
-    } 
-
-    if(m < 0) {
-        return 0;
-    }
-    else if (m > (int)intervalY.size() - 1) {
-        return intervalY.size() - 1;
-    }
-    //Only care about interval y exists in 
-    return m; 
 }
 
 void Grid::formEdges() {
