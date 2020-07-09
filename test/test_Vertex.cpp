@@ -55,3 +55,17 @@ TEST_CASE( "Vertex Distance", "[vertex]" ) {
             + pow((2.0 - 1.4), 2));
     REQUIRE( calcDist(v1, v2) == dist );
 }
+
+TEST_CASE( "Vertex Match", "[vertex]" ) {
+    Vertex v1(A, 1.0, 2.0);
+    Vertex v2(B, 2.0, 1.4);
+    //v1.createMatch(v2);
+    v1.setMatch(&v2);
+    v2.setMatch(&v1);
+    REQUIRE( v1.isFree() == false);
+    REQUIRE( (v1.getMatch())->getX() == v2.getX());
+    REQUIRE( (v1.getMatch())->getY() == v2.getY());
+    REQUIRE( v2.isFree() == false);
+    REQUIRE( (v2.getMatch())->getX() == v1.getX());
+    REQUIRE( (v2.getMatch())->getY() == v1.getY());
+}

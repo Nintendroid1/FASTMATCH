@@ -19,14 +19,26 @@ class Vertex : public Point {
 
         //Represents the number of vertices of the same class in a cell
         int weight;
+
+        //Vertex that shares an edge in matching
+        Vertex* match;
+
+        //Indicates visited
+        double distance;
     
     public:
         Vertex(Label l, double x, double y);
         Label getLabel() {return label;}
         void addEdge(Vertex v);
         void updateWeight();
+        void createMatch(Vertex v);
+        void setMatch(Vertex* v);
+        void setDistance(double d);
 
         vector<Vertex> getEdges() const {return edges;}
         int getWeight() const {return weight;}
+        Vertex* getMatch() {return match;}
+        bool isFree() {return match == NULL;}
+        double getDistance() {return distance;}
 };
 #endif
