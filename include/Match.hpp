@@ -20,9 +20,12 @@ class Match {
         vector<Vertex> vertices;
         double shortestDist;
     public:
-        Match(vector<Vertex> vs);
+        Match(vector<Vertex>& vs);
+        void HK();
         bool bfs();
-        bool dfs(Vertex v);
+        bool dfs(Vertex* v);
+
+        vector<Vertex> getHKResult() {return vertices;}
 
 };
 

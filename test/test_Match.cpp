@@ -70,7 +70,49 @@ TEST_CASE( "DFS", "[match]" ) {
 
     Match m(vertices);
     m.bfs();
-    REQUIRE( m.dfs(v1) == true );
+    REQUIRE( m.dfs(&v1) == true );
+}
 
+TEST_CASE( "BFS False", "[match]" ) {
+    Vertex v1(A, 0.0, 0.0);
+    Vertex v2(B, 2.0, 2.0);
 
+    vector<Vertex> vertices;
+    vertices.push_back(v1);
+    vertices.push_back(v2);
+
+    Match m(vertices);
+    REQUIRE(m.bfs() == false );
+}
+
+TEST_CASE( "DFS False", "[match]" ) {
+    Vertex v1(A, 0.0, 0.0);
+    Vertex v2(B, 2.0, 2.0);
+
+    vector<Vertex> vertices;
+    vertices.push_back(v1);
+    vertices.push_back(v2);
+
+    Match m(vertices);
+    m.bfs();
+    REQUIRE(m.dfs(&v1) == false );
+}
+
+TEST_CASE( "HK", "[match]" ) {
+    Vertex v1(A, 0.5, 0.0);
+    Vertex v2(B, 2.0, 2.0);
+
+    v1.addEdge(v2);
+
+    vector<Vertex> vertices;
+    vertices.push_back(v1);
+    vertices.push_back(v2);
+
+    Match m(vertices);
+    m.HK();
+
+    REQUIRE(m.getHKResult()[0].isFree() == false);
+    REQUIRE(m.getHKResult()[0].getMatch().getX() == v2.getX() );
+    REQUIRE(m.getHKResult()[0].getMatch().getY() == v2.getY() );
+    REQUIRE(m.getHKResult()[0].getMatch().getLabel() == v2.getLabel() );
 }

@@ -21,7 +21,7 @@ class Vertex : public Point {
         int weight;
 
         //Vertex that shares an edge in matching
-        Vertex* match;
+        vector<Vertex> match;
 
         //Indicates visited
         double distance;
@@ -31,14 +31,13 @@ class Vertex : public Point {
         Label getLabel() {return label;}
         void addEdge(Vertex v);
         void updateWeight();
-        void createMatch(Vertex v);
-        void setMatch(Vertex* v);
+        void setMatch(Vertex v);
         void setDistance(double d);
 
         vector<Vertex> getEdges() const {return edges;}
         int getWeight() const {return weight;}
-        Vertex* getMatch() {return match;}
-        bool isFree() {return match == NULL;}
+        Vertex getMatch() {return match.front();}
+        bool isFree() {return (int)match.size() == 0;}
         double getDistance() {return distance;}
 };
 #endif
