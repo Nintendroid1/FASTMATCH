@@ -1,23 +1,25 @@
 #include "../include/Match.hpp"
 
-Match::Match(vector<Vertex>& vs) {
-    vertices = vs;
+Match::Match(vector<Cell> cs) {
+    cells = cs;
 }
 
 //Hopcroft-Karp
-void Match::HK() {
+void Match::modHK() {
     int iteration = 0;
     
-    // cout << "Starting BFS" << endl;
+    cout << "Starting BFS" << endl;
     while(bfs()) {
-        // cout << "BFS Iteration " << iteration << endl;
-        for(int i = 0; i < (int) vertices.size(); i++) {
-            Vertex& v = vertices[i];
+        cout << "BFS Iteration " << iteration << endl;
+        for(int i = 0; i < (int) cells.size(); i++) {
+            Cell c = cells[i];
+
+            Vertex vCenterA = c.getVertexA();
 
             //Split by class
-            if(v.getLabel() == A && v.isFree()) {
-                // cout << "DFS" << endl;
-                dfs(&v);
+            if(vCenterA.isFree()) { 
+                cout << "DFS" << endl;
+                //dfs(&c);
             }
         }
     }
@@ -25,109 +27,111 @@ void Match::HK() {
 // Returns true if there is an augmenting path, else returns 
 // false 
 bool Match::bfs() { 
-    queue<Vertex> Q;
+    queue<Cell> Q;
   
     // First layer of vertices (set distance as 0) 
-    for (int i=0; i < (int)vertices.size(); i++) { 
-        Vertex& v = vertices[i];
+    for (int i=0; i < (int)cells.size(); i++) { 
+        Cell& v = cells[i];
 
-        //Split by class
-        if(v.getLabel() == B) {
-            continue;
-        }
+        Vertex vCenterA = v.getVertexA();
+
         // If this is a free vertex, add it to queue 
-        if (v.isFree()) { 
+        if (vCenterA.isFree()) { 
             // v is not matched 
             Q.push(v);
-            v.setDistance(0);  
+            vCenterA.setDistance(0);  
         } 
         else {
             // Else set distance as infinite so that this vertex 
             // is considered next time 
-            v.setDistance(INF); 
+            vCenterA.setDistance(INF); 
         }
     } 
   
     // Initialize distance to NIL as infinite 
     shortestDist = INF; 
   
-    // Q is going to contain vertices of left side only.  
+    // Q is going to contain vertices of left side only. 
     while (!Q.empty()) { 
-        // cout << "BFS Queue" << endl;
+        cout << "BFS Queue" << endl;
         // Dequeue a vertex 
-        Vertex& v = Q.front(); 
+        Cell& v = Q.front(); 
         Q.pop(); 
+
+        Vertex vCenterA = v.getVertexA();
   
         // If this node is not NIL and can provide a shorter path to NIL 
-        if (v.getDistance() < shortestDist) {
-            vector<Vertex> edges = v.getEdges();
-            
+        if (vCenterA.getDistance() < shortestDist) {
+            vector<Cell*> edges = v.getEdgesB();
+
             // Get all adjacent vertices of the dequeued vertex v 
             for (int i=0; i < (int)edges.size(); i++) { 
-                Vertex u = edges[i]; 
-                // cout << (edges[0]).getX() << endl; //TODO WHY is first vertex's x value invalid?
+                Cell* u = edges[i]; 
 
-                if (u.isFree()) { 
-                    shortestDist = v.getDistance() + 1;
+                Vertex* uCenterB = u->getPointerVertexB();
+
+                if (uCenterB->isFree()) {
+                    shortestDist = vCenterA.getDistance() + 1;
                 }
-                else if (u.getMatch().getDistance() == INF) {
+                else if (uCenterB->getMatch().getDistance() == INF) {
                     // Consider the pair and add it to queue
-                    Vertex tempMatch = u.getMatch(); 
-                    tempMatch.setDistance(v.getDistance() + 1); 
-                    Q.push(tempMatch);
+                    uCenterB->getMatch().setDistance(vCenterA.getDistance() + 1);
+                    Q.push(u->getCellMatch());
                 } 
                 // cout << "V: " << v.getLabel() << " (" << v.getX() << ", " << v.getY() << ")" << endl;
                 // cout << "U: " << u.getLabel() << " (" << u.getX() << ", " << u.getY() << ")" << endl << endl; 
             } 
-        } 
+        }
     } 
-  
+
     // If we could come back to NIL using alternating path of distinct 
     // vertices then there is an augmenting path 
     return (shortestDist != INF); 
 } 
 
 // Returns true if there is an augmenting path beginning with free vertex v 
-bool Match::dfs(Vertex* v) { 
-    if (v == NULL) {  
-        return true;
-    }
-    vector<Vertex> edges = v->getEdges(); //TODO Iterator?
+bool Match::dfs(Cell* v) { 
+    // if (v == NULL) {  
+    //     return true;
+    // }
+    // Vertex vCenterA = v.getVertexA();
+    // vector<Cell*> edges = v.getEdgesB();
     
-    for (int i = 0; i < (int) edges.size(); i++) { 
-        // Adjacent to v 
-        Vertex& u = edges[i]; 
-        
-        double nextDist;
-        if(u.isFree()) {
-            nextDist = shortestDist;
-        }
-        else {
-            nextDist = u.getMatch().getDistance();
-        }
+    // for (int i = 0; i < (int) edges.size(); i++) { 
+    //     // Adjacent to v 
+    //     Cell* u = edges[i]; 
+    //     Vertex* uCenterB = u->getPointerVertexB();
 
-        // Follow the distances set by BFS 
-        if (nextDist == (v->getDistance() + 1)) { 
-            // If dfs for pair of v also returns 
-            // true 
-            if (u.isFree()) { 
-                u.setMatch(*v);
-                v->setMatch(u);
+    //     double nextDist;
+    //     if(uCenterB.isFree()) {
+    //         nextDist = shortestDist;
+    //     }
+    //     else {
+    //         nextDist = uCenterB->getMatch().getDistance();
+    //     }
 
-                return true; 
-            }
-            else {
-                Vertex tempMatch = u.getMatch();
-                 if(dfs(&tempMatch)) {
-                    u.setMatch(*v);
-                    v->setMatch(u);
+    //     // Follow the distances set by BFS 
+    //     if (nextDist == (vCenterA.getDistance() + 1)) { 
+    //         // If dfs for pair of v also returns 
+    //         // true 
+    //         if (uCenterB->isFree()) { 
+    //             uCenterB->setMatch(vCenterA);
+    //             vCenterA.setMatch(*u);
 
-                    return true;
-                 }
-            } 
-        }  
-    }
-    // If there is no augmenting path beginning with v. 
-    v->setDistance(INF); 
+    //             return true; 
+    //         }
+    //         else {
+    //             Vertex tempMatch = uCenterB->getMatch();
+    //              if(dfs(&tempMatch)) {
+    //                 u.setMatch(*v);
+    //                 v->setMatch(u);
+
+    //                 return true;
+    //              }
+    //         } 
+    //     }  
+    // }
+    // // If there is no augmenting path beginning with v. 
+    // v->setDistance(INF); 
     return false;  
 }

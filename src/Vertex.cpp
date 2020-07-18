@@ -16,7 +16,12 @@ void Vertex::updateWeight() {
 }
 
 void Vertex::setMatch(Vertex v) {
-    match.push_back(v);
+    if((int)match.size() == 1) {
+        match[0] = v;
+    }
+    else {
+        match.push_back(v);
+    }
 }
 
 void Vertex::setDistance(double d) {

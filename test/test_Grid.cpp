@@ -71,16 +71,16 @@ TEST_CASE( "Grid formEdges", "[grid]" ) {
     double centerY2 = startY + g.getCells()[1].getColIndex() * l + l/2;
 
 
-    vector<Vertex*> edges1 = g.getCells()[0].getEdgesA();
-    vector<Vertex*> edges2 = g.getCells()[1].getEdgesB();
+    vector<Cell*> edges1 = g.getCells()[0].getEdgesA();
+    vector<Cell*> edges2 = g.getCells()[1].getEdgesB();
 
     // cout << edges1[0] << " " << edges1[0]->getX() << endl;
     // cout << (edges1[0]) << " " << centerX2 << endl;
-    REQUIRE( edges1[0]->getX() ==  centerX2);
-    REQUIRE( edges1[0]->getY() ==  centerY2);
+    REQUIRE( edges1[0]->getVertexA().getX() ==  centerX2);
+    REQUIRE( edges1[0]->getVertexA().getY() ==  centerY2);
 
-    REQUIRE( edges2[0]->getX() ==  centerX1);
-    REQUIRE( edges2[0]->getY() ==  centerY1);
+    REQUIRE( edges2[0]->getVertexB().getX() ==  centerX1);
+    REQUIRE( edges2[0]->getVertexB().getY() ==  centerY1);
 
     vs.clear();
     edges1.clear();

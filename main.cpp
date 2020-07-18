@@ -1,12 +1,5 @@
 #include "include/main.hpp"
 
-// void print(vector<int> const &input) {
-//     for (int i=0; i < input.size(); i++) {
-//         std::cout << input.at(i) << ' ';
-//     }
-//     std::cout << '\n';
-// }
-
 /*
 * Main runner for running Hopcroft-Karp Algorithm
 * and the new FASTMATCH algorithm  
@@ -21,44 +14,40 @@ int main(int argc, char *argv[]) {
         if (!inputFile) {
             cerr << "Could not open " << fileName << endl;
             return 0;
-        }
-        else
-        {
+        } else {
             string data;
-            getline(inputFile, data);//Info header
+            getline(inputFile, data);  //Info header
             vector<Vertex> allVertices;
-            while(getline(inputFile, data)) {
+            while (getline(inputFile, data)) {
                 istringstream iss(data);
                 string label, xCoor, yCoor;
                 iss >> label >> xCoor >> yCoor;
 
                 //Assumes two classes
-                if(label == "A:") {
+                if (label == "A:") {
                     allVertices.push_back(Vertex(A, stof(xCoor), stof(yCoor)));
-                }
-                else {
+                } else {
                     allVertices.push_back(Vertex(B, stof(xCoor), stof(yCoor)));
                 }
             }
 
-            if(string(argv[1]) == "HK") {
-            //TODO: Hopcroft-Karp implementation
-            }
-            else if(string(argv[1]) == "FAST") {
-                //TODO: FASTMATCH implementation
-            }
-
+            //Create Grid
             double e = 0.01;
             vector<double> ar;
             double d = 0.1;
             ar.push_back(1.0);
             GridGen gg = GridGen(e, ar);
-            gg.generateG(d, allVertices);
+            Grid g = gg.generateG(d, allVertices);
             allVertices.clear();
+
+            if (string(argv[1]) == "HK") {
+                
+            } else if (string(argv[1]) == "FAST") {
+                //TODO(me): FASTMATCH implementation
+            }
         }
         inputFile.close();
-    }
-    else {
+    } else {
         cout << "Usage: ./fastmatch [HK | FAST] [DATAFILE]" << endl;
     }
     return 0;

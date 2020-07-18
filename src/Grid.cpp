@@ -89,20 +89,20 @@ void Grid::formEdges() {
             if(i == j) {
                 continue;
             }
-            Cell& neighbor = sortCellX[j];
-            Vertex* nA = neighbor.getPointerVertexA();
-            Vertex* nB = neighbor.getPointerVertexB();
+            Cell* neighbor = &sortCellX[j];
+            // Vertex* nA = neighbor.getPointerVertexA();
+            // Vertex* nB = neighbor.getPointerVertexB();
 
             //Ignore when center point doesn't exist
             if(curr.getCellStatus() == ASET) {  
-                curr.formEdgeA(nB);
+                curr.formEdgeA(neighbor);
             }
             else if(curr.getCellStatus() == BSET) {
-                curr.formEdgeB(nA);
+                curr.formEdgeB(neighbor);
             }
             else {//curr.getCellStatus() == ALL
-                curr.formEdgeA(nB);
-                curr.formEdgeB(nA);
+                curr.formEdgeA(neighbor);
+                curr.formEdgeB(neighbor);
             }
         }
     }
@@ -120,20 +120,20 @@ void Grid::formEdges() {
             if(i == j) {
                 continue;
             }
-            Cell& neighbor = sortCellY[j];
-            Vertex* nA = neighbor.getPointerVertexA();
-            Vertex* nB = neighbor.getPointerVertexB();
+            Cell* neighbor = &sortCellY[j];
+            // Vertex* nA = neighbor.getPointerVertexA();
+            // Vertex* nB = neighbor.getPointerVertexB();
 
             //Ignore when center point doesn't exist
             if(curr.getCellStatus() == ASET) {  
-                curr.formEdgeA(nB);
+                curr.formEdgeA(neighbor);
             }
             else if(curr.getCellStatus() == BSET) {
-                curr.formEdgeB(nA);
+                curr.formEdgeB(neighbor);
             }
             else {//curr.getCellStatus() == ALL
-                curr.formEdgeA(nB);
-                curr.formEdgeB(nA);
+                curr.formEdgeA(neighbor);
+                curr.formEdgeB(neighbor);
             }
         }
     }

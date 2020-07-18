@@ -54,15 +54,25 @@ void Cell::addVertex(Vertex v) {
 }
 
 //Add edge between this center's vertex A
-void Cell::formEdgeA(Vertex* vB) {
-    edgesA.push_back(vB);
+void Cell::formEdgeA(Cell* cB) {
+    edgesA.push_back(cB);
     // cout << "In method " << vB << " " << vB->getX() << endl;
 
 }
 
 //Add edge between this center's vertex B
-void Cell::formEdgeB(Vertex* vA) {
-    edgesB.push_back(vA);
+void Cell::formEdgeB(Cell* cA) {
+    edgesB.push_back(cA);
+}
+
+//Form match with other cell
+void Cell::setCellMatch(Cell c) {
+    if((int)cellMatch.size() == 1) {
+        cellMatch[0] = c;
+    }
+    else {
+        cellMatch.push_back(c);
+    }
 }
 
 //Returns true if this cell has a lesser x value

@@ -1,5 +1,5 @@
-#ifndef MATCH
-#define MATCH
+#ifndef HOPCROFTKARP
+#define HOPCROFTKARP
 
 #define NIL 0 
 #define INF DBL_MAX 
@@ -15,17 +15,17 @@
 using namespace std;
 
 //https://www.geeksforgeeks.org/hopcroft-karp-algorithm-for-maximum-matching-set-2-implementation/
-class Match {
+class HK {
     private:
-        vector<Cell> cells;
+        vector<Vertex> vertices;
         double shortestDist;
     public:
-        Match(vector<Cell> cs);
-        void modHK();
+        HK(vector<Vertex>& vs);
+        void hopcroftKarp();
         bool bfs();
-        bool dfs(Cell* v);
+        bool dfs(Vertex* v);
 
-        vector<Cell> getModHKResult() {return cells;}
+        vector<Vertex> getHKResult() {return vertices;}
 
 };
 

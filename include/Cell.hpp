@@ -20,8 +20,8 @@ class Cell {
         Vertex vertexA;
         Vertex vertexB;
 
-        vector<Vertex*> edgesA; 
-        vector<Vertex*> edgesB;
+        vector<Cell*> edgesA; 
+        vector<Cell*> edgesB;
 
         //Location of cell within grid
         int rowIndex;
@@ -38,6 +38,9 @@ class Cell {
 
         //Indicates if empty, single class, or both classes
         Status cellStatus;
+
+        //Cell that shares an edge in matching
+        vector<Cell> cellMatch;
     public:
         Cell(int row, int col, double mX, double mY, double sideLength);
         
@@ -45,8 +48,8 @@ class Cell {
 
         //Add vertex to overall list and based on specific class
         void addVertex(Vertex v);
-        void formEdgeA(Vertex* vB);
-        void formEdgeB(Vertex* vA);
+        void formEdgeA(Cell* cB);
+        void formEdgeB(Cell* cA);
 
         static bool compareCenterX(Cell const & c1, Cell const & c2);
         static bool compareCenterY(Cell const & c1, Cell const & c2);
@@ -59,10 +62,13 @@ class Cell {
         Status getCellStatus() const {return cellStatus;}
         double getCenterX() const {return centerX;}
         double getCenterY() const {return centerY;}
+        void setCellMatch(Cell c);
 
-        vector<Vertex*> getEdgesA() const {return edgesA;}
-        vector<Vertex*> getEdgesB() const {return edgesB;}
+        vector<Cell*> getEdgesA() const {return edgesA;}
+        vector<Cell*> getEdgesB() const {return edgesB;}
         Vertex* getPointerVertexA()  {return &vertexA;}
         Vertex* getPointerVertexB()  {return &vertexB;}
+        bool isFree() {return (int)cellMatch.size() == 0;}
+        Cell getCellMatch() {return cellMatch.front();}
 };
 #endif
