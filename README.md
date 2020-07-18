@@ -3,6 +3,7 @@
 **Contents**<br>
 [About](#about)<br>
 [Documentation](#documentation)<br>
+[Style](#style)<br>
 [Unit Testing](#unit-testing)<br>
 [Running and Compiling](#running-and-compiling)<br>
 
@@ -12,6 +13,9 @@ Implementation based on the [SoCG 2019 Paper](https://drops.dagstuhl.de/opus/vol
 ## Documentation
 [UML Diagram](https://app.lucidchart.com/invitations/accept/92b8baa4-ec83-4598-b26b-c527b73a966f)<br>
 [Formal Write-Up](https://www.overleaf.com/read/sfvjzsjdqqtn)
+
+## Style
+The project (tries to) adhere to the [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html) using their [cpplint.py script](https://raw.githubusercontent.com/google/styleguide/gh-pages/cpplint/cpplint.py).
 
 ## Unit Testing
 Unit tests are done through the [Catch 2 Framework](https://github.com/catchorg/Catch2)
