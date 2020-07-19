@@ -56,4 +56,5 @@ class Grid {
    double getDelta() const {return delta;}
 };
 
+Grid generateGrid(double d, double epsilon, std::vector<Vertex> aV);
 #endif  // INCLUDE_GRID_HPP_

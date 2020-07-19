@@ -55,13 +55,13 @@ void Grid::populateCells() {
         double intervalY = startY + (k * sideLength);
 
         // Find row index in Grid
-        while (currX <= intervalX && intervalX < endX) {
+        while (abs(currX - intervalX) > sideLength && intervalX < endX) {
             j++;
             intervalX = startX + (j * sideLength);
         }
 
         // Find col index in Grid
-        while (currY <= intervalY && intervalY < endY) {
+        while (abs(currY - intervalY) > sideLength && intervalY < endY) {
             k++;
             intervalY = startY + (k * sideLength);
         }
@@ -206,5 +206,13 @@ int Grid::bsCellY(int l, int r, double y) {
     }
     // Only care about interval y exists in
     return m;
+}
+
+Grid generateGrid(double d, double epsilon, std::vector<Vertex> aV) {
+    Grid g(d, epsilon, aV);
+    g.determineBoundingSquare();
+    g.populateCells();
+    g.formEdges();
+    return g;
 }
 

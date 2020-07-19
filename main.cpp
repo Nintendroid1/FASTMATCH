@@ -8,7 +8,7 @@
 */
 int main(int argc, char *argv[]) {
     if (argc == 3) {
-        std::string fileName = string(argv[2]);
+        std::string fileName = std::string(argv[2]);
         std::ifstream inputFile;
         inputFile.open(fileName);
 
@@ -17,37 +17,39 @@ int main(int argc, char *argv[]) {
             return 0;
 
         } else {
-            string data;
+            std::string data;
             std::getline(inputFile, data);  // Info header
-            vector<Vertex> allVertices;
+            std::vector<Vertex> allVertices;
             while (std::getline(inputFile, data)) {
                 std::istringstream iss(data);
-                string label, xCoor, yCoor;
+                std::string label, xCoor, yCoor;
                 iss >> label >> xCoor >> yCoor;
 
                 // Assumes two classes
                 if (label == "A:") {
-                    allVertices.push_back(Vertex(A, std::stof(xCoor), std::stof(yCoor)));
+                    allVertices.push_back(Vertex{A, std::stof(xCoor), std::stof(yCoor)});
                 } else {
-                    allVertices.push_back(Vertex(B, std::stof(xCoor), std::stof(yCoor)));
+                    allVertices.push_back(Vertex{B, std::stof(xCoor), std::stof(yCoor)});
                 }
             }
+            std::cout << allVertices.size() << std::endl;
 
-            if (string(argv[1]) == "HK") {
+            if (std::string(argv[1]) == "HK") {
                 // TODO(Nintendroid1): Hopcroft-Karp implementation
-            } else if (string(argv[1]) == "FAST") {
+            } else if (std::string(argv[1]) == "FAST") {
                 // TODO(Nintendroid1): FASTMATCH implementation
             }
 
+            //Create Grid with delta, epsilon, and vertices
             double e = 0.01;
-            vector<double> ar;
-            double d = 0.1;
-            ar.push_back(1.0);
-            GridGen gg = GridGen(e, ar);
-            gg.generateG(d, allVertices);
+            double d = 10;
+            Grid g = generateGrid(d, e, allVertices);
             allVertices.clear();
+
+            std::cout << g.getCells().size() << std::endl;
         }
         inputFile.close();
+
     } else {
         std::cout << "Usage: ./fastmatch [HK | FAST] [DATAFILE]" << std::endl;
     }

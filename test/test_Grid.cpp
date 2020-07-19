@@ -54,10 +54,10 @@ TEST_CASE( "Grid populateCells", "[grid]" ) {
     double startX = 2.0 - abs(abs(2.0 - 3.0) - abs(1.0 - 2.0))/2;
     double startY = 1.0 - abs(abs(2.0 - 3.0) - abs(1.0 - 2.0))/2;
 
-    double centerX1 = startX + 213 * l + l/2;
-    double centerY1 = startY + 213 * l + l/2;
-    double centerX2 = startX + 213 * l + l/2;
-    double centerY2 = startY + 0 * l + l/2;
+    double centerX1 = startX + 0 * l + l/2;
+    double centerY1 = startY + 0 * l + l/2;
+    double centerX2 = startX + 212 * l + l/2;
+    double centerY2 = startY + 84 * l + l/2;
 
     REQUIRE( g.getCells()[0]->getCenterX() ==  centerX1);
     REQUIRE( g.getCells()[0]->getCenterY() ==  centerY1);
@@ -83,22 +83,20 @@ TEST_CASE( "Grid formEdges", "[grid]" ) {
     double startX = 2.0 - abs(abs(2.0 - 3.0) - abs(1.0 - 2.0))/2;
     double startY = 1.0 - abs(abs(2.0 - 3.0) - abs(1.0 - 2.0))/2;
 
-    double centerX1 = startX + 213 * l + l/2;
-    double centerY1 = startY + 213 * l + l/2;
-    double centerX2 = startX + 213 * l + l/2;
-    double centerY2 = startY + 0 * l + l/2;
+    double centerX1 = startX + 0 * l + l/2;
+    double centerY1 = startY + 0 * l + l/2;
+    double centerX2 = startX + 212 * l + l/2;
+    double centerY2 = startY + 84 * l + l/2;
 
-    std::vector<std::shared_ptr<Cell>> edges1 = g.getCells()[0]->getEdgesToA();
-    std::vector<std::shared_ptr<Cell>> edges2 = g.getCells()[1]->getEdgesToB();
+    std::shared_ptr<Cell> edges1 = g.getCells()[0]->getEdgesToA()[0].lock();
+    std::shared_ptr<Cell> edges2 = g.getCells()[1]->getEdgesToB()[0].lock();
 
-    REQUIRE( edges1[0]->getCenterX() ==  centerX2);
-    REQUIRE( edges1[0]->getCenterY() ==  centerY2);
+    REQUIRE( edges1->getCenterX() ==  centerX2);
+    REQUIRE( edges1->getCenterY() ==  centerY2);
 
-    REQUIRE( edges2[0]->getCenterX() ==  centerX1);
-    REQUIRE( edges2[0]->getCenterY() ==  centerY1);
+    REQUIRE( edges2->getCenterX() ==  centerX1);
+    REQUIRE( edges2->getCenterY() ==  centerY1);
 
     vs.clear();
-    edges1.clear();
-    edges2.clear();
 }
 

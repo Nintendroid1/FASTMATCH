@@ -24,8 +24,8 @@ class Cell {
     double centerX;
     double centerY;
 
-    std::vector<std::shared_ptr<Cell>> edgesToA;  // Cells with Label B
-    std::vector<std::shared_ptr<Cell>> edgesToB;  // Cells with Label A
+    std::vector<std::weak_ptr<Cell>> edgesToA;  // Cells with Label B
+    std::vector<std::weak_ptr<Cell>> edgesToB;  // Cells with Label A
 
     int weightA;  //# of Vertices in Cell with Label A
     int weightB;  //# of Vertices in Cell with Label B
@@ -33,7 +33,7 @@ class Cell {
 
     Status status;
 
-    std::shared_ptr<Cell> match;
+    std::weak_ptr<Cell> match;
     double distance;
 
  public:
@@ -42,16 +42,16 @@ class Cell {
     void createCenter(int row, int col,
         double minX, double minY, double cellLength);
     void addVertex(Label l);
-    void formEdgeA(std::shared_ptr<Cell> vB);
-    void formEdgeB(std::shared_ptr<Cell> vA);
-    void setMatch(std::shared_ptr<Cell> const& c);
+    void formEdgeA(std::weak_ptr<Cell> vB);
+    void formEdgeB(std::weak_ptr<Cell> vA);
+    void setMatch(std::weak_ptr<Cell> c);
 
     // Getters
     double getCenterX() const {return centerX;}
     double getCenterY() const {return centerY;}
 
-    std::vector<std::shared_ptr<Cell>> getEdgesToA() {return edgesToA;}
-    std::vector<std::shared_ptr<Cell>> getEdgesToB() {return edgesToB;}
+    std::vector<std::weak_ptr<Cell>> getEdgesToA() {return edgesToA;}
+    std::vector<std::weak_ptr<Cell>> getEdgesToB() {return edgesToB;}
 
     int getWeightA() {return weightA;}
     int getWeightB() {return weightB;}
@@ -59,7 +59,7 @@ class Cell {
 
     Status getStatus() {return status;}
 
-    std::shared_ptr<Cell> getMatch() {return match;}
+    std::weak_ptr<Cell> getMatch() {return match;}
     double getDistance() {return distance;}
 };
 

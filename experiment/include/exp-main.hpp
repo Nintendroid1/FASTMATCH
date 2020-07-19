@@ -11,8 +11,6 @@
 #include <vector>
 
 #include "../../include/main.hpp"
-#include "../../include/GridGen.hpp"
-#include "../../include/Cell.hpp"
 #include "../include/random_points.hpp"
 
 #endif  // EXPERIMENT_INCLUDE_EXP_MAIN_HPP_

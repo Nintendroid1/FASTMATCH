@@ -75,14 +75,17 @@ TEST_CASE( "Cell matches", "[cell]" ) {
     std::shared_ptr<Cell> c2 =  std::make_shared<Cell>();
     c2->createCenter(3, 0, -1.0, -1.0, 2.0);
 
-    c1->setMatch(c2);
-    c2->setMatch(c1);
+    c1->setMatch(std::weak_ptr<Cell>(c2));
+    c2->setMatch(std::weak_ptr<Cell>(c1));
 
-    REQUIRE( c1->getMatch()->getCenterX() == c2->getCenterX());
-    REQUIRE( c1->getMatch()->getCenterY() == c2->getCenterY());
+    std::shared_ptr<Cell> c1Match = c1->getMatch().lock();
+    std::shared_ptr<Cell> c2Match = c2->getMatch().lock();
+
+    REQUIRE( c1Match->getCenterX() == c2->getCenterX());
+    REQUIRE( c1Match->getCenterY() == c2->getCenterY());
     
-    REQUIRE( c2->getMatch()->getCenterX() == c1->getCenterX());
-    REQUIRE( c2->getMatch()->getCenterY() == c1->getCenterY());
+    REQUIRE( c2Match->getCenterX() == c1->getCenterX());
+    REQUIRE( c2Match->getCenterY() == c1->getCenterY());
 
 }
 
@@ -93,19 +96,21 @@ TEST_CASE( "Cell edges", "[cell]" ) {
     std::shared_ptr<Cell> c2 =  std::make_shared<Cell>();
     c2->createCenter(3, 0, -1.0, -1.0, 2.0);
 
-    c1->formEdgeA(c2);
-    c2->formEdgeB(c1);
+    c1->formEdgeA(std::weak_ptr<Cell>(c2));
+    c2->formEdgeB(std::weak_ptr<Cell>(c1));
 
     REQUIRE(c1->getEdgesToA().size() == 1);
     REQUIRE(c1->getEdgesToB().size() == 0);
     REQUIRE(c2->getEdgesToA().size() == 0);
     REQUIRE(c2->getEdgesToB().size() == 1);
 
+    std::shared_ptr<Cell> c1Edge = c1->getEdgesToA()[0].lock();
+    std::shared_ptr<Cell> c2Edge = c2->getEdgesToB()[0].lock();
 
-    REQUIRE( c1->getEdgesToA()[0]->getCenterX() == c2->getCenterX());
-    REQUIRE( c1->getEdgesToA()[0]->getCenterY() == c2->getCenterY());
+    REQUIRE( c1Edge->getCenterX() == c2->getCenterX());
+    REQUIRE( c1Edge->getCenterY() == c2->getCenterY());
     
-    REQUIRE( c2->getEdgesToB()[0]->getCenterX() == c1->getCenterX());
-    REQUIRE( c2->getEdgesToB()[0]->getCenterY() == c1->getCenterY());
+    REQUIRE( c2Edge->getCenterX() == c1->getCenterX());
+    REQUIRE( c2Edge->getCenterY() == c1->getCenterY());
 
 }

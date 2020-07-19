@@ -12,7 +12,6 @@
 #include <string>
 #include <vector>
 
-#include "GridGen.hpp"
-#include "Cell.hpp"
+#include "Grid.hpp"
 
 #endif  // INCLUDE_MAIN_HPP_

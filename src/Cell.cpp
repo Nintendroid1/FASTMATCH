@@ -53,16 +53,16 @@ void Cell::addVertex(Label l) {
 }
 
 // Add edge between this center's vertex A
-void Cell::formEdgeA(std::shared_ptr<Cell> cB) {
+void Cell::formEdgeA(std::weak_ptr<Cell> cB) {
     edgesToA.push_back(cB);
 }
 
 // Add edge between this center's vertex B
-void Cell::formEdgeB(std::shared_ptr<Cell> cA) {
+void Cell::formEdgeB(std::weak_ptr<Cell> cA) {
     edgesToB.push_back(cA);
 }
 
-void Cell::setMatch(std::shared_ptr<Cell> const& c) {
+void Cell::setMatch(std::weak_ptr<Cell> c) {
     match = c;
 }
 
