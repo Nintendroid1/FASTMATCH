@@ -1,6 +1,6 @@
 // Copyright 2020, Nathaniel Salazar, All rights reserved
 
-#include "../include/Vertex.h"
+#include "../include/Vertex.hpp"
 
 // Returns the Euclidean between two points
 double calcVertexDist(Vertex const & lhs, Vertex const & rhs) {

@@ -1,6 +1,6 @@
 // Copyright 2020, Nathaniel Salazar, All rights reserved
 
-#include "../include/Cell.h"
+#include "../include/Cell.hpp"
 
 Cell::Cell() {
     weightA = 0;
@@ -72,4 +72,9 @@ bool compareCellX(Cell const& lhs, Cell const& rhs) {
 
 bool compareCellY(Cell const& lhs, Cell const& rhs) {
     return lhs.getCenterY() < rhs.getCenterY();
+}
+
+bool comparePCellY(const std::shared_ptr<Cell>& lhs, 
+     const std::shared_ptr<Cell>& rhs) {
+    return lhs->getCenterY() < rhs->getCenterY();
 }

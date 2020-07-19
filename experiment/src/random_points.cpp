@@ -1,6 +1,6 @@
 // Copyright 2020, Nathaniel Salazar, All rights reserved
 
-#include "../include/random_points.h"
+#include "../include/random_points.hpp"
 
 // Generate points in the bounding square using normal distribution
 // num = total number of points to generate

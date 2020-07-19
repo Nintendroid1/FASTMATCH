@@ -1,5 +1,5 @@
 #include "catch.hpp"
-#include "../include/Cell.h"
+#include "../include/Cell.hpp"
 
 TEST_CASE( "Cell generated", "[cell]" ) {
     Cell c;
@@ -108,7 +108,4 @@ TEST_CASE( "Cell edges", "[cell]" ) {
     REQUIRE( c2->getEdgesToB()[0]->getCenterX() == c1->getCenterX());
     REQUIRE( c2->getEdgesToB()[0]->getCenterY() == c1->getCenterY());
 
-}
-
-TEST_CASE( "Memory Clear", "[cell]" ) {
 }

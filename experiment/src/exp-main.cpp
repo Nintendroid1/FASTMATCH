@@ -1,6 +1,6 @@
 // Copyright 2020, Nathaniel Salazar, All rights reserved
 
-#include "../include/exp-main.h"
+#include "../include/exp-main.hpp"
 
 /*
 *  Main runner for developing test cases and running Hopcroft-Karp Algorithm

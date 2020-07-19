@@ -1,7 +1,7 @@
 // Copyright 2020, Nathaniel Salazar, All rights reserved
 
-#ifndef INCLUDE_CELL_H_
-#define INCLUDE_CELL_H_
+#ifndef INCLUDE_CELL_HPP_
+#define INCLUDE_CELL_HPP_
 
 #include <stdio.h>
 #include <math.h>
@@ -11,8 +11,8 @@
 #include <iostream>
 #include <memory>
 
-#include "Vertex.h"
-#include "Status.h"
+#include "Vertex.hpp"
+#include "Status.hpp"
 
 /*
 *  Hold the two center vertices and their 
@@ -65,5 +65,7 @@ class Cell {
 
 bool compareCellX(Cell const& lhs, Cell const& rhs);
 bool compareCellY(Cell const& lhs, Cell const& rhs);
+bool comparePCellY(const std::shared_ptr<Cell>& lhs, 
+     const std::shared_ptr<Cell>& rhs);
 
-#endif  // INCLUDE_CELL_H_
+#endif  // INCLUDE_CELL_HPP_

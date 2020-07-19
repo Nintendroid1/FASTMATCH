@@ -1,7 +1,6 @@
 // Copyright 2020, Nathaniel Salazar, All rights reserved
 
-// #include "include/main.hpp"
-#include "include/main.h"
+#include "include/main.hpp"
 /*
 *  Main runner for running Hopcroft-Karp Algorithm
 *  and the new FASTMATCH algorithm  

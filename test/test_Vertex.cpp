@@ -1,5 +1,5 @@
 #include "catch.hpp"
-#include "../include/Vertex.h"
+#include "../include/Vertex.hpp"
 
 TEST_CASE( "Vertex generated", "[vertex]" ) {
     Vertex p1 {A, 0.5, 1.0};
