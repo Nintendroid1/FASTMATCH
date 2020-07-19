@@ -1,6 +1,6 @@
 // Copyright 2020, Nathaniel Salazar, All rights reserved
 
-#include "../include/random_points.hpp"
+#include "../include/random_points.h"
 
 // Generate points in the bounding square using normal distribution
 // num = total number of points to generate
@@ -10,16 +10,16 @@ void genRandPoints(double boundary, int n, int distNum) {
     double upper_bound = boundary;
 
     char buffer[100];
-    snprintf(buffer, sizeof(buffer), "data/nd_%.2f_%d.txt", delta, n);
-    ofstream dataFile(buffer);
-    dataFile << "Normal Distribution with Delta = ";
-    dataFile << delta << " with " << n << " points." << endl;
+    snprintf(buffer, sizeof(buffer), "data/nd_%d.txt", n);
+    std::ofstream dataFile(buffer);
+    dataFile << "Normal Distribution";
+    dataFile << " with " << n << " points." << std::endl;
 
     // https://en.cppreference.com/w/cpp/numeric/random
-    random_device rd{};
-    mt19937 gen{rd()};
+    std::random_device rd{};
+    std::mt19937 gen{rd()};
 
-    normal_distribution<double> dist;
+    std::normal_distribution<double> dist;
     // TODO(Nintendroid1): Different distributions
     // switch(distNum) {
     //     case 0:
@@ -46,9 +46,9 @@ void genRandPoints(double boundary, int n, int distNum) {
         }
 
         if (i % 2 == 0) {
-            dataFile << "A: " << x << " " << y << endl;
+            dataFile << "A: " << x << " " << y << std::endl;
         } else {
-            dataFile << "B: " << x << " " << y << endl;
+            dataFile << "B: " << x << " " << y << std::endl;
         }
     }
 

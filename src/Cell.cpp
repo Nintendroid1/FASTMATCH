@@ -1,76 +1,75 @@
-#include "../include/Cell.hpp"
-#include <iostream>
+// Copyright 2020, Nathaniel Salazar, All rights reserved
 
-Cell::Cell(int row, int col, double mX, double mY, double sideLength) 
-    : vertexA(A, 0.0,0.0), vertexB(B, 0.0,0.0) {
-    rowIndex = row;
-    colIndex = col;
-    minX = mX;
-    minY = mY;
-    cellLength = sideLength;
-    cellStatus = NONE;
+#include "../include/Cell.h"
+
+Cell::Cell() {
+    weightA = 0;
+    weightB = 0;
+    capacity = 0.0;
+    status = NONE;
+    distance = 0.0;
 }
 
-//TODO Can't be negative
-void Cell::createCenter() {
-    //Snap points to center
+Cell::~Cell() {
+    edgesToA.clear();
+    edgesToB.clear();
+}
+
+void Cell::createCenter(int row, int col,
+    double minX, double minY, double cellLength) {
+
+    // Snap points to center
     double midLength = cellLength/2;
 
-    //Assumes 2delta bounding square
-    centerX = minX + (rowIndex * cellLength) + midLength;
-    centerY = minY + (colIndex * cellLength) + midLength;
-
-    //Initialize weight 0 since no vertices yet
-    vertexA = Vertex(A, centerX, centerY);
-    vertexB = Vertex(B, centerX, centerY);
+    // Assumes 2delta bounding square
+    centerX = minX + (row * cellLength) + midLength;
+    centerY = minY + (col * cellLength) + midLength;
 }
 
-//Add vertex to overall list and based on specific class
-void Cell::addVertex(Vertex v) {
-    if(v.getLabel() == A) {
-        //At least one vertex of class A
-        vertexA.updateWeight();
+// Add vertex to overall list and based on specific class
+void Cell::addVertex(Label l) {
+    if (l == A) {
+        // At least one vertex of class A
+        weightA++;
 
-        //Update Cell's Status relative to A
-        if(cellStatus == NONE) {
-            cellStatus = ASET;
-        }
-        else if(cellStatus == BSET) {
-            cellStatus = ALL;
-        }
-    }
-    else {//v.getLabel() == B
-        //At least one vertex of class B
-        vertexB.updateWeight();
+        // Update Cell's Status relative to A
+        if (status == NONE) {
+            status = ASET;
 
-        //Update Cell's Status relative to B
-        if(cellStatus == NONE) {
-            cellStatus = BSET;
+        } else if (status == BSET) {
+            status = ALL;
         }
-        else if(cellStatus == ASET) {
-            cellStatus = ALL;
+    } else {  // l == B
+        // At least one vertex of class B
+        weightB++;
+
+        // Update Cell's Status relative to B
+        if (status == NONE) {
+            status = BSET;
+        } else if (status == ASET) {
+            status = ALL;
         }
     }
 }
 
-//Add edge between this center's vertex A
-void Cell::formEdgeA(Vertex* vB) {
-    edgesA.push_back(vB);
-    // cout << "In method " << vB << " " << vB->getX() << endl;
-
+// Add edge between this center's vertex A
+void Cell::formEdgeA(std::shared_ptr<Cell> cB) {
+    edgesToA.push_back(cB);
 }
 
-//Add edge between this center's vertex B
-void Cell::formEdgeB(Vertex* vA) {
-    edgesB.push_back(vA);
+// Add edge between this center's vertex B
+void Cell::formEdgeB(std::shared_ptr<Cell> cA) {
+    edgesToB.push_back(cA);
 }
 
-//Returns true if this cell has a lesser x value
-bool Cell::compareCenterX(Cell const & c1, Cell const & c2) {
-    return Point::compareX(c1.getVertexA(), c2.getVertexA()); //A or B is fine, same coordinates
+void Cell::setMatch(std::shared_ptr<Cell> const& c) {
+    match = c;
 }
 
-//Returns true if this cell has a lesser y value
-bool Cell::compareCenterY(Cell const & c1, Cell const & c2) {
-    return Point::compareY(c1.getVertexA(), c2.getVertexA()); //A or B is fine, same coordinates
+bool compareCellX(Cell const& lhs, Cell const& rhs) {
+    return lhs.getCenterX() < rhs.getCenterX();
+}
+
+bool compareCellY(Cell const& lhs, Cell const& rhs) {
+    return lhs.getCenterY() < rhs.getCenterY();
 }

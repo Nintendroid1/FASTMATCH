@@ -1,6 +1,6 @@
 // Copyright 2020, Nathaniel Salazar, All rights reserved
 
-#include "../include/exp-main.hpp"
+#include "../include/exp-main.h"
 
 /*
 *  Main runner for developing test cases and running Hopcroft-Karp Algorithm
@@ -23,11 +23,11 @@ int main(int argc, char *argv[]) {
         distNum = atoi(argv[3]);
 
     } else if (argc > 4) {
-        cout << "Usage: ./exp_gen [boundary] [n] [dist]" << endl;
+        std::cout << "Usage: ./exp_gen [boundary] [n] [dist]" << endl;
         return 0;
     }
 
-    cout << "Cell Side Length: " << (epsilon*boundary)/(6*sqrt(2)) << endl;
+    std::cout << "Cell Side Length: " << (epsilon*boundary)/(6*sqrt(2)) << endl;
     genRandPoints(boundary, n, distNum);
 
     return 0;

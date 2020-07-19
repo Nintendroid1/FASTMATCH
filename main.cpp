@@ -1,7 +1,7 @@
 // Copyright 2020, Nathaniel Salazar, All rights reserved
 
-#include "include/main.hpp"
-
+// #include "include/main.hpp"
+#include "include/main.h"
 /*
 *  Main runner for running Hopcroft-Karp Algorithm
 *  and the new FASTMATCH algorithm  
@@ -9,28 +9,28 @@
 */
 int main(int argc, char *argv[]) {
     if (argc == 3) {
-        string fileName = string(argv[2]);
-        ifstream inputFile;
+        std::string fileName = string(argv[2]);
+        std::ifstream inputFile;
         inputFile.open(fileName);
 
         if (!inputFile) {
-            cerr << "Could not open " << fileName << endl;
+            std::cerr << "Could not open " << fileName << std::endl;
             return 0;
 
         } else {
             string data;
-            getline(inputFile, data);  // Info header
+            std::getline(inputFile, data);  // Info header
             vector<Vertex> allVertices;
-            while (getline(inputFile, data)) {
-                istringstream iss(data);
+            while (std::getline(inputFile, data)) {
+                std::istringstream iss(data);
                 string label, xCoor, yCoor;
                 iss >> label >> xCoor >> yCoor;
 
                 // Assumes two classes
                 if (label == "A:") {
-                    allVertices.push_back(Vertex(A, stof(xCoor), stof(yCoor)));
+                    allVertices.push_back(Vertex(A, std::stof(xCoor), std::stof(yCoor)));
                 } else {
-                    allVertices.push_back(Vertex(B, stof(xCoor), stof(yCoor)));
+                    allVertices.push_back(Vertex(B, std::stof(xCoor), std::stof(yCoor)));
                 }
             }
 
@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
         }
         inputFile.close();
     } else {
-        cout << "Usage: ./fastmatch [HK | FAST] [DATAFILE]" << endl;
+        std::cout << "Usage: ./fastmatch [HK | FAST] [DATAFILE]" << std::endl;
     }
     return 0;
 }
