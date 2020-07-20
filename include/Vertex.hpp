@@ -1,44 +1,29 @@
-#ifndef VERTEX
-#define VERTEX
+// Copyright 2020, Nathaniel Salazar, All rights reserved
+
+#ifndef INCLUDE_VERTEX_HPP_
+#define INCLUDE_VERTEX_HPP_
 
 #include <stdio.h>
-#include <vector>
+#include <math.h>
+
+#include <algorithm>
+#include <iostream>
+
 #include "Label.hpp"
-#include "Point.hpp"
-using namespace std;
 
 /*
-* Vertex is a subclass of Point
-* Has information of label, edges, and weight
+*  This implementation assumes a 2-D representation
+*  Can be extended to higher dimension.
+*  Part of Cell
 */
-
-class Vertex : public Point {
-    private:
-        Label label;
-        vector<Vertex> edges;
-
-        //Represents the number of vertices of the same class in a cell
-        int weight;
-
-        //Vertex that shares an edge in matching
-        Vertex* match;
-
-        //Indicates visited
-        double distance;
-    
-    public:
-        Vertex(Label l, double x, double y);
-        Label getLabel() {return label;}
-        void addEdge(Vertex v);
-        void updateWeight();
-        void createMatch(Vertex v);
-        void setMatch(Vertex* v);
-        void setDistance(double d);
-
-        vector<Vertex> getEdges() const {return edges;}
-        int getWeight() const {return weight;}
-        Vertex* getMatch() {return match;}
-        bool isFree() {return match == NULL;}
-        double getDistance() {return distance;}
+struct Vertex {
+    Label label;
+    double x;
+    double y;
 };
-#endif
+
+double calcVertexDist(Vertex const & lhs, Vertex const & rhs);
+bool compareVertexX(Vertex const& lhs, Vertex const& rhs);
+bool compareVertexY(Vertex const& lhs, Vertex const& rhs);
+
+#endif  // INCLUDE_VERTEX_HPP_

@@ -4,7 +4,7 @@
 [About](#about)<br>
 [Documentation](#documentation)<br>
 [Style](#style)<br>
-[Unit Testing](#unit-testing)<br>
+[Testing](#testing)<br>
 [Running and Compiling](#running-and-compiling)<br>
 
 ## About
@@ -17,8 +17,9 @@ Implementation based on the [SoCG 2019 Paper](https://drops.dagstuhl.de/opus/vol
 ## Style
 The project (tries to) adhere to the [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html) using their [cpplint.py script](https://raw.githubusercontent.com/google/styleguide/gh-pages/cpplint/cpplint.py).
 
-## Unit Testing
-Unit tests are done through the [Catch 2 Framework](https://github.com/catchorg/Catch2)
+## Testing
+Unit tests are done through the [Catch 2 Framework](https://github.com/catchorg/Catch2). <br>
+To check for memory leaks we use [Valgrind](https://valgrind.org/docs/manual/quick-start.html).
 
 ## Running and Compiling
 ### Application
@@ -51,4 +52,9 @@ Run the ```test_compile.sh``` script in the scripts folder<br>
 Run executable ```test_fastmatch```<br>
 ```
 ./build/test_fastmatch
+```
+
+Run ```cpplint.py```, unit tests, and ```valgrind``` all at once with ```verbose_test.sh``` <br>
+```
+./scripts/verbose_test.sh [RECENTLY_EDITED_FILE]
 ```

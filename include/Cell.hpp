@@ -1,68 +1,74 @@
-#ifndef CELL
-#define CELL
+// Copyright 2020, Nathaniel Salazar, All rights reserved
+
+#ifndef INCLUDE_CELL_HPP_
+#define INCLUDE_CELL_HPP_
 
 #include <stdio.h>
-#include <vector>
 #include <math.h>
+
+#include <algorithm>
+#include <vector>
+#include <iostream>
+#include <memory>
 
 #include "Vertex.hpp"
 #include "Status.hpp"
-using namespace std;
 
 /*
-* Contains vertices from both class A and B
-* Contained in a Grid
+*  Hold the two center vertices and their 
+*  edges to other cells.
+*  Part of Grid
 */
-
 class Cell {
-    private:
-        //Centerpoint of respective class
-        Vertex vertexA;
-        Vertex vertexB;
+ private:
+    double centerX;
+    double centerY;
 
-        vector<Vertex*> edgesA; 
-        vector<Vertex*> edgesB;
+    std::vector<std::weak_ptr<Cell>> edgesToA;  // Cells with Label B
+    std::vector<std::weak_ptr<Cell>> edgesToB;  // Cells with Label A
 
-        //Location of cell within grid
-        int rowIndex;
-        int colIndex;
+    int weightA;  //# of Vertices in Cell with Label A
+    int weightB;  //# of Vertices in Cell with Label B
+    double capacity;
 
-        double centerX;
-        double centerY;
+    Status status;
 
-        double minX;
-        double minY;
+    std::weak_ptr<Cell> match;
+    bool free;
+    double distance;
 
-        //sideLength of cell
-        double cellLength;
+ public:
+    Cell();
+    ~Cell();
+    void createCenter(int row, int col,
+        double minX, double minY, double cellLength);
+    void addVertex(Label l);
+    void formEdgeA(std::weak_ptr<Cell> vB);
+    void formEdgeB(std::weak_ptr<Cell> vA);
+    void setMatch(std::weak_ptr<Cell> c);
+    void setDistance(double d);
 
-        //Indicates if empty, single class, or both classes
-        Status cellStatus;
-    public:
-        Cell(int row, int col, double mX, double mY, double sideLength);
-        
-        void createCenter();
+    // Getters
+    double getCenterX() const {return centerX;}
+    double getCenterY() const {return centerY;}
 
-        //Add vertex to overall list and based on specific class
-        void addVertex(Vertex v);
-        void formEdgeA(Vertex* vB);
-        void formEdgeB(Vertex* vA);
+    std::vector<std::weak_ptr<Cell>> getEdgesToA() {return edgesToA;}
+    std::vector<std::weak_ptr<Cell>> getEdgesToB() {return edgesToB;}
 
-        static bool compareCenterX(Cell const & c1, Cell const & c2);
-        static bool compareCenterY(Cell const & c1, Cell const & c2);
+    int getWeightA() {return weightA;}
+    int getWeightB() {return weightB;}
+    double getCapacity() {return capacity;}
 
-        Vertex getVertexA() const {return vertexA;}
-        Vertex getVertexB() const {return vertexB;}
-        int getRowIndex() const {return rowIndex;}
-        int getColIndex() const {return colIndex;}
-        double getCellLength() const {return cellLength;}
-        Status getCellStatus() const {return cellStatus;}
-        double getCenterX() const {return centerX;}
-        double getCenterY() const {return centerY;}
+    Status getStatus() {return status;}
 
-        vector<Vertex*> getEdgesA() const {return edgesA;}
-        vector<Vertex*> getEdgesB() const {return edgesB;}
-        Vertex* getPointerVertexA()  {return &vertexA;}
-        Vertex* getPointerVertexB()  {return &vertexB;}
+    std::weak_ptr<Cell> getMatch() {return match;}
+    bool isFree() {return free;}
+    double getDistance() {return distance;}
 };
-#endif
+
+bool compareCellX(Cell const& lhs, Cell const& rhs);
+bool compareCellY(Cell const& lhs, Cell const& rhs);
+bool comparePCellY(const std::shared_ptr<Cell>& lhs, 
+     const std::shared_ptr<Cell>& rhs);
+
+#endif  // INCLUDE_CELL_HPP_

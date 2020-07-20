@@ -1,29 +1,32 @@
-#ifndef MATCH
-#define MATCH
+// Copyright 2020, Nathaniel Salazar, All rights reserved
 
-#define NIL 0 
-#define INF DBL_MAX 
+#ifndef INCLUDE_MATCH_HPP_
+#define INCLUDE_MATCH_HPP_
+
+#define NIL 0
+#define INF DBL_MAX
+
+#include <stdio.h>
+#include <float.h>
 
 #include <iostream>
-#include <stdio.h>
 #include <vector>
-#include <float.h>
-#include <queue> 
+#include <queue>
 
-#include "GridGen.hpp"
+#include "Grid.hpp"
 
-using namespace std;
-
-//https://www.geeksforgeeks.org/hopcroft-karp-algorithm-for-maximum-matching-set-2-implementation/
+// https://www.geeksforgeeks.org/hopcroft-karp-algorithm-for-maximum-matching-set-2-implementation/
 class Match {
-    private:
-        vector<Vertex> vertices;
-        double shortestDist;
-    public:
-        Match(vector<Vertex> vs);
-        bool bfs();
-        bool dfs(Vertex v);
+ private:
+    std::vector<std::shared_ptr<Cell>> cells;
+    double shortestDist;
+ public:
+    Match(std::vector<std::shared_ptr<Cell>> cs);
+    void modHK();
+    bool bfs();
+    bool dfs(std::shared_ptr<Cell> c);
 
+    // Getters
+    std::vector<std::shared_ptr<Cell>> getModHKResult() {return cells;}
 };
-
-#endif
+#endif  // INCLUDE_MATCH_HPP_
