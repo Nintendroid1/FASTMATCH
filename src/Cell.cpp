@@ -68,6 +68,10 @@ void Cell::setMatch(std::weak_ptr<Cell> c) {
     free = false;
 }
 
+void Cell::setCapacity(int c) {
+    capacity = c;
+}
+
 void Cell::setDistance(double d) {
     distance = d;
 }
@@ -78,6 +82,11 @@ bool compareCellX(Cell const& lhs, Cell const& rhs) {
 
 bool compareCellY(Cell const& lhs, Cell const& rhs) {
     return lhs.getCenterY() < rhs.getCenterY();
+}
+
+bool comparePCellX(const std::shared_ptr<Cell>& lhs, 
+    const std::shared_ptr<Cell>& rhs) {
+    return lhs->getCenterX() < rhs->getCenterX();
 }
 
 bool comparePCellY(const std::shared_ptr<Cell>& lhs, 

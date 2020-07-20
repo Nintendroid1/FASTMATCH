@@ -30,7 +30,7 @@ bool Match::bfs() {
 
         // If this is a free vertex
         // with label A, add it to queue
-        if (v->isFree() && v->getWeightA() > 0) {
+        if (v->isFree() && v->getStatus() == ASET) {
             // v is not matched
             Q.push(std::weak_ptr<Cell>(v));
             v->setDistance(0);
@@ -103,15 +103,13 @@ bool Match::dfs(std::shared_ptr<Cell> v) {
             // If dfs for pair of v also returns
             // true
             if (u->isFree()) {
-                u->setMatch(std::weak_ptr<Cell>(v));
-                v->setMatch(std::weak_ptr<Cell>(u));
+                Match::createMatch(v, u);
                 return true;
 
             } else {
                 std::shared_ptr<Cell> uMatch = u->getMatch().lock();
                  if (dfs(uMatch)) {
-                    u->setMatch(std::weak_ptr<Cell>(v));
-                    v->setMatch(std::weak_ptr<Cell>(u));
+                    Match::createMatch(v, u);
                     return true;
                  }
             }
@@ -120,4 +118,15 @@ bool Match::dfs(std::shared_ptr<Cell> v) {
     // If there is no augmenting path beginning with v.
     v->setDistance(INF);
     return false;
+}
+
+// Forms a match between v and u and updates their capacities
+void Match::createMatch(std::shared_ptr<Cell> v,
+    std::shared_ptr<Cell> u) {
+    u->setMatch(std::weak_ptr<Cell>(v));
+    v->setMatch(std::weak_ptr<Cell>(u));
+
+    int newCap = std::min(v->getWeightA(), u->getWeightB());
+    u->setCapacity(newCap);
+    v->setCapacity(newCap);
 }

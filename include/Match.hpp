@@ -20,8 +20,11 @@ class Match {
  private:
     std::vector<std::shared_ptr<Cell>> cells;
     double shortestDist;
+
+    void createMatch(std::shared_ptr<Cell> v, std::shared_ptr<Cell> u);
  public:
-    Match(std::vector<std::shared_ptr<Cell>> cs);
+    explicit Match(std::vector<std::shared_ptr<Cell>> cs);
+
     void modHK();
     bool bfs();
     bool dfs(std::shared_ptr<Cell> c);
@@ -29,4 +32,5 @@ class Match {
     // Getters
     std::vector<std::shared_ptr<Cell>> getModHKResult() {return cells;}
 };
+
 #endif  // INCLUDE_MATCH_HPP_

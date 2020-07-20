@@ -5,7 +5,7 @@ TEST_CASE( "Cell generated", "[cell]" ) {
     Cell c;
     REQUIRE( c.getWeightA() == 0);
     REQUIRE( c.getWeightB() == 0);
-    REQUIRE( c.getCapacity() == 0.0);
+    REQUIRE( c.getCapacity() == 0);
     REQUIRE( c.getStatus() == NONE );
     REQUIRE( c.getDistance() == 0.0);
     REQUIRE( c.isFree() == true);

@@ -134,4 +134,5 @@ TEST_CASE( "HK", "[match]" ) {
     REQUIRE(cMatch->getCenterX() == g.getCells()[1]->getCenterX() );
     REQUIRE(cMatch->getCenterY() == g.getCells()[1]->getCenterY() );
     REQUIRE(cMatch->getWeightB() == g.getCells()[1]->getWeightB() );
+    REQUIRE(cMatch->getCapacity() == g.getCells()[1]->getCapacity() );
 }

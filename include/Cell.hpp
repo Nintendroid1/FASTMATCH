@@ -29,7 +29,7 @@ class Cell {
 
     int weightA;  //# of Vertices in Cell with Label A
     int weightB;  //# of Vertices in Cell with Label B
-    double capacity;
+    int capacity;
 
     Status status;
 
@@ -46,6 +46,7 @@ class Cell {
     void formEdgeA(std::weak_ptr<Cell> vB);
     void formEdgeB(std::weak_ptr<Cell> vA);
     void setMatch(std::weak_ptr<Cell> c);
+    void setCapacity(int c);
     void setDistance(double d);
 
     // Getters
@@ -57,7 +58,7 @@ class Cell {
 
     int getWeightA() {return weightA;}
     int getWeightB() {return weightB;}
-    double getCapacity() {return capacity;}
+    int getCapacity() {return capacity;}
 
     Status getStatus() {return status;}
 
@@ -68,6 +69,8 @@ class Cell {
 
 bool compareCellX(Cell const& lhs, Cell const& rhs);
 bool compareCellY(Cell const& lhs, Cell const& rhs);
+bool comparePCellX(const std::shared_ptr<Cell>& lhs, 
+    const std::shared_ptr<Cell>& rhs);
 bool comparePCellY(const std::shared_ptr<Cell>& lhs, 
      const std::shared_ptr<Cell>& rhs);
 
