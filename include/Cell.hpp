@@ -34,6 +34,7 @@ class Cell {
     Status status;
 
     std::weak_ptr<Cell> match;
+    bool free;
     double distance;
 
  public:
@@ -45,6 +46,7 @@ class Cell {
     void formEdgeA(std::weak_ptr<Cell> vB);
     void formEdgeB(std::weak_ptr<Cell> vA);
     void setMatch(std::weak_ptr<Cell> c);
+    void setDistance(double d);
 
     // Getters
     double getCenterX() const {return centerX;}
@@ -60,6 +62,7 @@ class Cell {
     Status getStatus() {return status;}
 
     std::weak_ptr<Cell> getMatch() {return match;}
+    bool isFree() {return free;}
     double getDistance() {return distance;}
 };
 

@@ -7,6 +7,7 @@ Cell::Cell() {
     weightB = 0;
     capacity = 0.0;
     status = NONE;
+    free = true;
     distance = 0.0;
 }
 
@@ -64,6 +65,11 @@ void Cell::formEdgeB(std::weak_ptr<Cell> cA) {
 
 void Cell::setMatch(std::weak_ptr<Cell> c) {
     match = c;
+    free = false;
+}
+
+void Cell::setDistance(double d) {
+    distance = d;
 }
 
 bool compareCellX(Cell const& lhs, Cell const& rhs) {
@@ -75,6 +81,6 @@ bool compareCellY(Cell const& lhs, Cell const& rhs) {
 }
 
 bool comparePCellY(const std::shared_ptr<Cell>& lhs, 
-     const std::shared_ptr<Cell>& rhs) {
+    const std::shared_ptr<Cell>& rhs) {
     return lhs->getCenterY() < rhs->getCenterY();
 }

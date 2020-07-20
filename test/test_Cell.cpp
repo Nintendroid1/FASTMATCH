@@ -8,6 +8,7 @@ TEST_CASE( "Cell generated", "[cell]" ) {
     REQUIRE( c.getCapacity() == 0.0);
     REQUIRE( c.getStatus() == NONE );
     REQUIRE( c.getDistance() == 0.0);
+    REQUIRE( c.isFree() == true);
 }
 
 TEST_CASE( "Cell center points generate", "[cell]") {
@@ -83,9 +84,11 @@ TEST_CASE( "Cell matches", "[cell]" ) {
 
     REQUIRE( c1Match->getCenterX() == c2->getCenterX());
     REQUIRE( c1Match->getCenterY() == c2->getCenterY());
+    REQUIRE( c1->isFree() == false);
     
     REQUIRE( c2Match->getCenterX() == c1->getCenterX());
     REQUIRE( c2Match->getCenterY() == c1->getCenterY());
+    REQUIRE( c2->isFree() == false);
 
 }
 

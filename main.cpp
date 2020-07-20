@@ -32,7 +32,6 @@ int main(int argc, char *argv[]) {
                     allVertices.push_back(Vertex{B, std::stof(xCoor), std::stof(yCoor)});
                 }
             }
-            std::cout << allVertices.size() << std::endl;
 
             if (std::string(argv[1]) == "HK") {
                 // TODO(Nintendroid1): Hopcroft-Karp implementation
@@ -42,11 +41,10 @@ int main(int argc, char *argv[]) {
 
             //Create Grid with delta, epsilon, and vertices
             double e = 0.01;
-            double d = 10;
+            double d = 1;
             Grid g = generateGrid(d, e, allVertices);
             allVertices.clear();
 
-            std::cout << g.getCells().size() << std::endl;
         }
         inputFile.close();
 
