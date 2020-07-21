@@ -88,8 +88,8 @@ TEST_CASE( "Grid formEdges", "[grid]" ) {
     double centerX2 = startX + 212 * l + l/2;
     double centerY2 = startY + 84 * l + l/2;
 
-    std::shared_ptr<Cell> edges1 = g.getCells()[0]->getEdgesToA()[0].lock();
-    std::shared_ptr<Cell> edges2 = g.getCells()[1]->getEdgesToB()[0].lock();
+    std::shared_ptr<Cell> edges1 = (std::get<0>(g.getCells()[0]->getEdgesToA()[0])).lock();
+    std::shared_ptr<Cell> edges2 = (std::get<0>(g.getCells()[1]->getEdgesToB()[0])).lock();
 
     REQUIRE( edges1->getCenterX() ==  centerX2);
     REQUIRE( edges1->getCenterY() ==  centerY2);

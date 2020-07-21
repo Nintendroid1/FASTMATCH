@@ -55,12 +55,14 @@ void Cell::addVertex(Label l) {
 
 // Add edge between this center's vertex A
 void Cell::formEdgeA(std::weak_ptr<Cell> cB) {
-    edgesToA.push_back(cB);
+    std::tuple<std::weak_ptr<Cell>, bool> e(cB, false);
+    edgesToA.push_back(e);
 }
 
 // Add edge between this center's vertex B
 void Cell::formEdgeB(std::weak_ptr<Cell> cA) {
-    edgesToB.push_back(cA);
+    std::tuple<std::weak_ptr<Cell>, bool> e(cA, false);
+    edgesToB.push_back(e);
 }
 
 void Cell::setMatch(std::weak_ptr<Cell> c) {
@@ -84,17 +86,17 @@ bool compareCellY(Cell const& lhs, Cell const& rhs) {
     return lhs.getCenterY() < rhs.getCenterY();
 }
 
-bool comparePCellX(const std::shared_ptr<Cell>& lhs, 
+bool comparePCellX(const std::shared_ptr<Cell>& lhs,
     const std::shared_ptr<Cell>& rhs) {
     return lhs->getCenterX() < rhs->getCenterX();
 }
 
-bool comparePCellY(const std::shared_ptr<Cell>& lhs, 
+bool comparePCellY(const std::shared_ptr<Cell>& lhs,
     const std::shared_ptr<Cell>& rhs) {
     return lhs->getCenterY() < rhs->getCenterY();
 }
 
-bool operator== (const std::weak_ptr<Cell>& plhs, 
+bool operator== (const std::weak_ptr<Cell>& plhs,
     const std::weak_ptr<Cell>& prhs) {
         std::shared_ptr<Cell> lhs = plhs.lock();
         std::shared_ptr<Cell> rhs = prhs.lock();

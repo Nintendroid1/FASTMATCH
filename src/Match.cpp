@@ -52,11 +52,12 @@ bool Match::bfs() {
 
         // If this node is not NIL and can provide a shorter path to NIL
         if (v->getDistance() < shortestDist) {
-            std::vector<std::weak_ptr<Cell>> edges = v->getEdgesToA();
+            std::vector<std::tuple<std::weak_ptr<Cell>, bool>>
+                edges = v->getEdgesToA();
 
             // Get all adjacent vertices of the dequeued vertex v
             for (int i=0; i < static_cast<int>(edges.size()); i++) {
-                std::shared_ptr<Cell> u = edges[i].lock();
+                std::shared_ptr<Cell> u = std::get<0>(edges[i]).lock();
 
                 if (u->isFree()) {
                     shortestDist = v->getDistance() + 1;
@@ -83,11 +84,11 @@ bool Match::dfs(std::shared_ptr<Cell> v) {
     if (v == NULL) {
         return true;
     }
-    std::vector<std::weak_ptr<Cell>> edges = v->getEdgesToA();
+    std::vector<std::tuple<std::weak_ptr<Cell>, bool>> edges = v->getEdgesToA();
 
     for (int i = 0; i < static_cast<int>(edges.size()); i++) {
         // Adjacent to v
-        std::shared_ptr<Cell> u = edges[i].lock();
+        std::shared_ptr<Cell> u = std::get<0>(edges[i]).lock();
 
         double nextDist;
         if (u->isFree()) {
@@ -125,13 +126,22 @@ bool Match::dfs(std::shared_ptr<Cell> v) {
 bool Match::modDFS(std::weak_ptr<Cell> temp) {
     std::shared_ptr<Cell> v_k = temp.lock();
     // If unvisited edge going out of v_k
-    std::vector<std::weak_ptr<Cell>> edges = v_k->getEdgesToA();
+    std::vector<std::tuple<std::weak_ptr<Cell>, bool>>
+        edges = v_k->getEdgesToA();
     bool visitedAll = false;
 
     for (int i = 0; i < static_cast<int>(edges.size()); i++) {
-        std::shared_ptr<Cell> v = edges[i].lock();
+        std::shared_ptr<Cell> v = std::get<0>(edges[i]).lock();
 
-        // Mark (v_k, v) as visited
+        // This edge is visited
+        if (std::get<1>(edges[i]) == true) {
+            continue;
+        }
+        else {  // Edge is not visited
+            // Mark (v_k, v) as visited
+            std::get<1>(edges[i]) = true;
+        }
+
 
         // If v is on P
         if (std::find(P.begin(), P.end(), v) != P.end()) {
@@ -144,6 +154,7 @@ bool Match::modDFS(std::weak_ptr<Cell> temp) {
 
             if (v->isFree()) {
                 // Augment, delete visited edges, terminate DFS
+                deleteEdges(v);
                 return true;
             } else {
                 // Continue DFS from v_{k+1}
@@ -158,6 +169,7 @@ bool Match::modDFS(std::weak_ptr<Cell> temp) {
             std::shared_ptr<Cell> v_k = P[k].lock();
             if (v_k == v_1) {
                 // Delete visited edges and terminate DFS
+                deleteEdges(v_k);
                 return false;
             }
             // Delete v_k from P and continue from v_{k-1}
@@ -178,4 +190,15 @@ void Match::createMatch(std::shared_ptr<Cell> v,
     int newCap = std::min(v->getWeightA(), u->getWeightB());
     u->setCapacity(newCap);
     v->setCapacity(newCap);
+}
+
+void Match::deleteEdges(std::shared_ptr<Cell> v_k) {
+        std::vector<std::tuple<std::weak_ptr<Cell>, bool>>
+        edges = v_k->getEdgesToA();
+
+        for(int i = 0; i < static_cast<int>(edges.size()); i++) {
+            if(std::get<1>(edges[i]) == true) {
+                edges.erase(edges.begin() + i);
+            }
+        }
 }

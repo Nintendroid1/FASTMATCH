@@ -25,6 +25,7 @@ class Match {
     std::shared_ptr<Cell> v_1;  // Initial start in modDFS stored in P
 
     void createMatch(std::shared_ptr<Cell> v, std::shared_ptr<Cell> u);
+    void deleteEdges(std::shared_ptr<Cell> v_k);
  public:
     explicit Match(std::vector<std::shared_ptr<Cell>> cs);
 

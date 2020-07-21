@@ -107,8 +107,8 @@ TEST_CASE( "Cell edges", "[cell]" ) {
     REQUIRE(c2->getEdgesToA().size() == 0);
     REQUIRE(c2->getEdgesToB().size() == 1);
 
-    std::shared_ptr<Cell> c1Edge = c1->getEdgesToA()[0].lock();
-    std::shared_ptr<Cell> c2Edge = c2->getEdgesToB()[0].lock();
+    std::shared_ptr<Cell> c1Edge = (std::get<0>(c1->getEdgesToA()[0])).lock();
+    std::shared_ptr<Cell> c2Edge = (std::get<0>(c2->getEdgesToB()[0])).lock();
 
     REQUIRE( c1Edge->getCenterX() == c2->getCenterX());
     REQUIRE( c1Edge->getCenterY() == c2->getCenterY());
