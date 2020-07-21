@@ -117,3 +117,18 @@ TEST_CASE( "Cell edges", "[cell]" ) {
     REQUIRE( c2Edge->getCenterY() == c1->getCenterY());
 
 }
+
+TEST_CASE( "Cell ==", "[cell]" ) {
+    std::shared_ptr<Cell> c1 =  std::make_shared<Cell>();
+    c1->createCenter(0, 3, -1.0, -1.0, 2.0);
+
+    std::shared_ptr<Cell> c2 =  std::make_shared<Cell>();
+    c2->createCenter(3, 0, -1.0, -1.0, 2.0);
+
+    std::vector<std::weak_ptr<Cell>> P;
+    P.push_back(std::weak_ptr<Cell>(c1));
+
+    REQUIRE( std::find(P.begin(), P.end(), c1) != P.end());
+    REQUIRE( std::find(P.begin(), P.end(), c2) == P.end());
+
+}

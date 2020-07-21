@@ -73,5 +73,7 @@ bool comparePCellX(const std::shared_ptr<Cell>& lhs,
     const std::shared_ptr<Cell>& rhs);
 bool comparePCellY(const std::shared_ptr<Cell>& lhs, 
      const std::shared_ptr<Cell>& rhs);
+bool operator== (const std::weak_ptr<Cell>& plhs, 
+    const std::weak_ptr<Cell>& prhs);
 
 #endif  // INCLUDE_CELL_HPP_

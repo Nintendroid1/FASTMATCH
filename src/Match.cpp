@@ -120,6 +120,55 @@ bool Match::dfs(std::shared_ptr<Cell> v) {
     return false;
 }
 
+// Edges are (A, B)
+// P = <b = v_1>
+bool Match::modDFS(std::weak_ptr<Cell> temp) {
+    std::shared_ptr<Cell> v_k = temp.lock();
+    // If unvisited edge going out of v_k
+    std::vector<std::weak_ptr<Cell>> edges = v_k->getEdgesToA();
+    bool visitedAll = false;
+
+    for (int i = 0; i < static_cast<int>(edges.size()); i++) {
+        std::shared_ptr<Cell> v = edges[i].lock();
+
+        // Mark (v_k, v) as visited
+
+        // If v is on P
+        if (std::find(P.begin(), P.end(), v) != P.end()) {
+            // Continue the DFS from v_k
+            Match::modDFS(v_k);
+
+        } else {  // v is not in P
+            // Add (v_k, v) and set v_{k+1} = v
+            P.push_back(std::weak_ptr<Cell>(v));
+
+            if (v->isFree()) {
+                // Augment, delete visited edges, terminate DFS
+                return true;
+            } else {
+                // Continue DFS from v_{k+1}
+                Match::modDFS(v);
+            }
+        }
+    }
+
+    if (visitedAll) {
+        // If P = <v_1>
+        for (int k = static_cast<int>(P.size()) - 1; k > 0; k--) {
+            std::shared_ptr<Cell> v_k = P[k].lock();
+            if (v_k == v_1) {
+                // Delete visited edges and terminate DFS
+                return false;
+            }
+            // Delete v_k from P and continue from v_{k-1}
+            P.pop_back();
+            Match::modDFS(P.back());
+        }
+    }
+
+    return false;
+}
+
 // Forms a match between v and u and updates their capacities
 void Match::createMatch(std::shared_ptr<Cell> v,
     std::shared_ptr<Cell> u) {

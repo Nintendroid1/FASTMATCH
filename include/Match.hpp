@@ -21,6 +21,9 @@ class Match {
     std::vector<std::shared_ptr<Cell>> cells;
     double shortestDist;
 
+    std::vector<std::weak_ptr<Cell>> P;  // Path = <b = v_1>
+    std::shared_ptr<Cell> v_1;  // Initial start in modDFS stored in P
+
     void createMatch(std::shared_ptr<Cell> v, std::shared_ptr<Cell> u);
  public:
     explicit Match(std::vector<std::shared_ptr<Cell>> cs);
@@ -28,6 +31,8 @@ class Match {
     void modHK();
     bool bfs();
     bool dfs(std::shared_ptr<Cell> c);
+
+    bool modDFS(std::weak_ptr<Cell> v_k);
 
     // Getters
     std::vector<std::shared_ptr<Cell>> getModHKResult() {return cells;}

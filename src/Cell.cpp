@@ -93,3 +93,16 @@ bool comparePCellY(const std::shared_ptr<Cell>& lhs,
     const std::shared_ptr<Cell>& rhs) {
     return lhs->getCenterY() < rhs->getCenterY();
 }
+
+bool operator== (const std::weak_ptr<Cell>& plhs, 
+    const std::weak_ptr<Cell>& prhs) {
+        std::shared_ptr<Cell> lhs = plhs.lock();
+        std::shared_ptr<Cell> rhs = prhs.lock();
+        return (lhs->getCenterX() == rhs->getCenterX() &&
+                lhs->getCenterY() == rhs->getCenterY() &&
+                lhs->getWeightA() == rhs->getWeightA() &&
+                lhs->getWeightB() == rhs->getWeightB() &&
+                lhs->getCapacity() == rhs->getCapacity() &&
+                lhs->getStatus() == rhs->getStatus() &&
+                lhs->isFree() == rhs->isFree());
+}
