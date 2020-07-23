@@ -10,6 +10,7 @@
 #include <vector>
 #include <iostream>
 #include <memory>
+#include <tuple>
 
 #include "Vertex.hpp"
 #include "Status.hpp"
@@ -24,12 +25,15 @@ class Cell {
     double centerX;
     double centerY;
 
-    std::vector<std::weak_ptr<Cell>> edgesToA;  // Cells with Label B
-    std::vector<std::weak_ptr<Cell>> edgesToB;  // Cells with Label A
+    // src = this, dest = std::weak_ptr<Cell>, visited = bool
+    std::vector<std::tuple<std::weak_ptr<Cell>, bool>>
+        edgesToA;  // Cells with Label B
+    std::vector<std::tuple<std::weak_ptr<Cell>, bool>>
+        edgesToB;  // Cells with Label A
 
     int weightA;  //# of Vertices in Cell with Label A
     int weightB;  //# of Vertices in Cell with Label B
-    double capacity;
+    int capacity;
 
     Status status;
 
@@ -46,18 +50,21 @@ class Cell {
     void formEdgeA(std::weak_ptr<Cell> vB);
     void formEdgeB(std::weak_ptr<Cell> vA);
     void setMatch(std::weak_ptr<Cell> c);
+    void setCapacity(int c);
     void setDistance(double d);
 
     // Getters
     double getCenterX() const {return centerX;}
     double getCenterY() const {return centerY;}
 
-    std::vector<std::weak_ptr<Cell>> getEdgesToA() {return edgesToA;}
-    std::vector<std::weak_ptr<Cell>> getEdgesToB() {return edgesToB;}
+    std::vector<std::tuple<std::weak_ptr<Cell>, bool>>
+        getEdgesToA() {return edgesToA;}
+    std::vector<std::tuple<std::weak_ptr<Cell>, bool>>
+        getEdgesToB() {return edgesToB;}
 
     int getWeightA() {return weightA;}
     int getWeightB() {return weightB;}
-    double getCapacity() {return capacity;}
+    int getCapacity() {return capacity;}
 
     Status getStatus() {return status;}
 
@@ -68,7 +75,11 @@ class Cell {
 
 bool compareCellX(Cell const& lhs, Cell const& rhs);
 bool compareCellY(Cell const& lhs, Cell const& rhs);
-bool comparePCellY(const std::shared_ptr<Cell>& lhs, 
+bool comparePCellX(const std::shared_ptr<Cell>& lhs,
+    const std::shared_ptr<Cell>& rhs);
+bool comparePCellY(const std::shared_ptr<Cell>& lhs,
      const std::shared_ptr<Cell>& rhs);
+bool operator== (const std::weak_ptr<Cell>& plhs,
+    const std::weak_ptr<Cell>& prhs);
 
 #endif  // INCLUDE_CELL_HPP_

@@ -5,7 +5,7 @@ TEST_CASE( "Cell generated", "[cell]" ) {
     Cell c;
     REQUIRE( c.getWeightA() == 0);
     REQUIRE( c.getWeightB() == 0);
-    REQUIRE( c.getCapacity() == 0.0);
+    REQUIRE( c.getCapacity() == 0);
     REQUIRE( c.getStatus() == NONE );
     REQUIRE( c.getDistance() == 0.0);
     REQUIRE( c.isFree() == true);
@@ -107,13 +107,28 @@ TEST_CASE( "Cell edges", "[cell]" ) {
     REQUIRE(c2->getEdgesToA().size() == 0);
     REQUIRE(c2->getEdgesToB().size() == 1);
 
-    std::shared_ptr<Cell> c1Edge = c1->getEdgesToA()[0].lock();
-    std::shared_ptr<Cell> c2Edge = c2->getEdgesToB()[0].lock();
+    std::shared_ptr<Cell> c1Edge = (std::get<0>(c1->getEdgesToA()[0])).lock();
+    std::shared_ptr<Cell> c2Edge = (std::get<0>(c2->getEdgesToB()[0])).lock();
 
     REQUIRE( c1Edge->getCenterX() == c2->getCenterX());
     REQUIRE( c1Edge->getCenterY() == c2->getCenterY());
     
     REQUIRE( c2Edge->getCenterX() == c1->getCenterX());
     REQUIRE( c2Edge->getCenterY() == c1->getCenterY());
+
+}
+
+TEST_CASE( "Cell ==", "[cell]" ) {
+    std::shared_ptr<Cell> c1 =  std::make_shared<Cell>();
+    c1->createCenter(0, 3, -1.0, -1.0, 2.0);
+
+    std::shared_ptr<Cell> c2 =  std::make_shared<Cell>();
+    c2->createCenter(3, 0, -1.0, -1.0, 2.0);
+
+    std::vector<std::weak_ptr<Cell>> P;
+    P.push_back(std::weak_ptr<Cell>(c1));
+
+    REQUIRE( std::find(P.begin(), P.end(), c1) != P.end());
+    REQUIRE( std::find(P.begin(), P.end(), c2) == P.end());
 
 }
