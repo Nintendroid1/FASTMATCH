@@ -19,6 +19,24 @@ void Match::modHK() {
         }
     }
 }
+
+// Modified Hopcroft-Karp
+void Match::modifiedHK() {
+    while (bfs()) {
+        for (int i = 0; i < static_cast<int>(cells.size()); i++) {
+            std::shared_ptr<Cell> c = cells[i];
+
+            // Split by class
+            if (c->isFree() && c->getWeightA() > 0) {  //TODO(Nintendroid1): Avoid Repetition?
+                P.clear();
+                v_1 = c;
+                P.push_back(std::weak_ptr<Cell>(v_1));
+                modDFS(v_1);
+            }
+        }
+    }
+}
+
 // Returns true if there is an augmenting path, else returns
 // false
 bool Match::bfs() {
@@ -125,10 +143,10 @@ bool Match::dfs(std::shared_ptr<Cell> v) {
 // P = <b = v_1>
 bool Match::modDFS(std::weak_ptr<Cell> temp) {
     std::shared_ptr<Cell> v_k = temp.lock();
+
     // If unvisited edge going out of v_k
     std::vector<std::tuple<std::weak_ptr<Cell>, bool>>
         edges = v_k->getEdgesToA();
-    bool visitedAll = false;
 
     for (int i = 0; i < static_cast<int>(edges.size()); i++) {
         std::shared_ptr<Cell> v = std::get<0>(edges[i]).lock();
@@ -136,17 +154,17 @@ bool Match::modDFS(std::weak_ptr<Cell> temp) {
         // This edge is visited
         if (std::get<1>(edges[i]) == true) {
             continue;
-        }
-        else {  // Edge is not visited
+
+        } else {  // Edge is not visited
             // Mark (v_k, v) as visited
             std::get<1>(edges[i]) = true;
+            visited.push_back(edges[i]);  //Edges in G
         }
 
-
-        // If v is on P
+        // If v is in P
         if (std::find(P.begin(), P.end(), v) != P.end()) {
-            // Continue the DFS from v_k
-            Match::modDFS(v_k);
+            // Continue the DFS from v_k which is current iteration
+            continue;
 
         } else {  // v is not in P
             // Add (v_k, v) and set v_{k+1} = v
@@ -154,8 +172,10 @@ bool Match::modDFS(std::weak_ptr<Cell> temp) {
 
             if (v->isFree()) {
                 // Augment, delete visited edges, terminate DFS
-                deleteEdges(v);
+                createMatch(v_k, v);
+                deleteEdges();
                 return true;
+
             } else {
                 // Continue DFS from v_{k+1}
                 Match::modDFS(v);
@@ -163,19 +183,15 @@ bool Match::modDFS(std::weak_ptr<Cell> temp) {
         }
     }
 
-    if (visitedAll) {
-        // If P = <v_1>
-        for (int k = static_cast<int>(P.size()) - 1; k > 0; k--) {
-            std::shared_ptr<Cell> v_k = P[k].lock();
-            if (v_k == v_1) {
-                // Delete visited edges and terminate DFS
-                deleteEdges(v_k);
-                return false;
-            }
-            // Delete v_k from P and continue from v_{k-1}
-            P.pop_back();
-            Match::modDFS(P.back());
-        }
+    // No more unvisited edges out of v_k
+    if (v_k == v_1) {
+        // Delete visited edges and terminate DFS
+        deleteEdges();
+
+    } else {
+        // Delete v_k from P and continue from v_{k-1}
+        P.pop_back();
+        Match::modDFS(P.back());
     }
 
     return false;
@@ -192,13 +208,12 @@ void Match::createMatch(std::shared_ptr<Cell> v,
     v->setCapacity(newCap);
 }
 
-void Match::deleteEdges(std::shared_ptr<Cell> v_k) {
-        std::vector<std::tuple<std::weak_ptr<Cell>, bool>>
-        edges = v_k->getEdgesToA();
+void Match::deleteEdges() {
+    for(int i = 0; i < static_cast<int>(visited.size()); i++) {
+        std::shared_ptr<Cell> e = std::get<0>(visited[i]).lock();
 
-        for(int i = 0; i < static_cast<int>(edges.size()); i++) {
-            if(std::get<1>(edges[i]) == true) {
-                edges.erase(edges.begin() + i);
-            }
+        if (std::find(P.begin(), P.end(), e) == P.end()) {
+            visited.erase(visited.begin() + 1);
         }
+    }
 }

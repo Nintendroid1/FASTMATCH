@@ -23,13 +23,14 @@ class Match {
 
     std::vector<std::weak_ptr<Cell>> P;  // Path = <b = v_1>
     std::shared_ptr<Cell> v_1;  // Initial start in modDFS stored in P
-
+    std::vector<std::tuple<std::weak_ptr<Cell>, bool>> visited;
     void createMatch(std::shared_ptr<Cell> v, std::shared_ptr<Cell> u);
-    void deleteEdges(std::shared_ptr<Cell> v_k);
+    void deleteEdges();
  public:
     explicit Match(std::vector<std::shared_ptr<Cell>> cs);
 
     void modHK();
+    void modifiedHK();
     bool bfs();
     bool dfs(std::shared_ptr<Cell> c);
 
