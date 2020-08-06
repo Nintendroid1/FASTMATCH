@@ -5,15 +5,17 @@
 Match::Match(std::vector<std::shared_ptr<Cell>> cs) {
     cells = cs;
 }
-
+// TODO(Nintendroid1) Separate algorithms to separate files
 // Modified Hopcroft-Karp
 void Match::modHK() {
+    // Find augmenting paths and assign distances
     while (bfs()) {
         for (int i = 0; i < static_cast<int>(cells.size()); i++) {
             std::shared_ptr<Cell> c = cells[i];
 
-            // Split by class
-            if (c->isFree()) {
+            // Augment the paths
+            if (c->isFree() && (c->getStatus() == ASET ||
+                c->getStatus() == ALL)) {
                 dfs(c);
             }
         }
@@ -27,7 +29,7 @@ void Match::modifiedHK() {
             std::shared_ptr<Cell> c = cells[i];
 
             // Split by class
-            if (c->isFree() && c->getWeightA() > 0) {  //TODO(Nintendroid1): Avoid Repetition?
+            if (c->isFree() && c->getWeightA() > 0) {  // TODO(Nintendroid1): Avoid Repetition?
                 P.clear();
                 v_1 = c;
                 P.push_back(std::weak_ptr<Cell>(v_1));
@@ -35,6 +37,22 @@ void Match::modifiedHK() {
             }
         }
     }
+}
+
+//Ford-Fulkerson
+void Match::FordFulk() {
+    for (int i = 0; i < static_cast<int>(cells.size()); i++) {
+        std::shared_ptr<Cell> c = cells[i];
+
+        resetVisited();
+
+        // Augment the paths
+        if (c->isFree() && (c->getStatus() == ASET ||
+            c->getStatus() == ALL)) {
+            ffDFS(c);
+        }
+    }
+    resetVisited();
 }
 
 // Returns true if there is an augmenting path, else returns
@@ -46,13 +64,16 @@ bool Match::bfs() {
     for (int i=0; i < static_cast<int>(cells.size()); i++) {
         std::shared_ptr<Cell> v = cells[i];
 
+        if (v->getStatus() == BSET || v->getStatus() == NONE) {
+            continue;
+        }
+
         // If this is a free vertex
         // with label A, add it to queue
-        if (v->isFree() && v->getStatus() == ASET) {
+        if (v->isFree()) {
             // v is not matched
-            Q.push(std::weak_ptr<Cell>(v));
             v->setDistance(0);
-
+            Q.push(std::weak_ptr<Cell>(v));
         } else {
             // Else set distance as infinite so that this vertex
             // is considered next time
@@ -62,9 +83,9 @@ bool Match::bfs() {
     // Initialize distance to NIL as infinite
     shortestDist = INF;
 
-    // Q is going to contain vertices of left side only.
+    // Q is going to contain vertices of label A.
     while (!Q.empty()) {
-        // Dequeue a vertex
+        // Dequeue a vertex A
         std::shared_ptr<Cell> v = Q.front().lock();
         Q.pop();
 
@@ -77,11 +98,13 @@ bool Match::bfs() {
             for (int i=0; i < static_cast<int>(edges.size()); i++) {
                 std::shared_ptr<Cell> u = std::get<0>(edges[i]).lock();
 
+                // Assign layer + 1
                 if (u->isFree()) {
                     shortestDist = v->getDistance() + 1;
 
                 } else {
                     std::shared_ptr<Cell> uMatch = u->getMatch().lock();
+
                     if (uMatch->getDistance() == INF) {
                         // Consider the pair and add it to queue
                         uMatch->setDistance(v->getDistance() + 1);
@@ -108,6 +131,7 @@ bool Match::dfs(std::shared_ptr<Cell> v) {
         // Adjacent to v
         std::shared_ptr<Cell> u = std::get<0>(edges[i]).lock();
 
+        // Track last vertex in search path
         double nextDist;
         if (u->isFree()) {
             nextDist = shortestDist;
@@ -118,6 +142,7 @@ bool Match::dfs(std::shared_ptr<Cell> v) {
         }
 
         // Follow the distances set by BFS
+        // Only consider the admissible edges
         if (nextDist == (v->getDistance() + 1)) {
             // If dfs for pair of v also returns
             // true
@@ -134,9 +159,90 @@ bool Match::dfs(std::shared_ptr<Cell> v) {
             }
         }
     }
-    // If there is no augmenting path beginning with v.
+    // Ensure vertex is not explored twice
     v->setDistance(INF);
     return false;
+}
+
+bool Match::modBFS() {
+    // // Initialize distance to NIL as infinite
+    // shortestDist = INF;
+
+    // // First layer of vertices (set distance as 0)
+    // for (int i=0; i < static_cast<int>(cells.size()); i++) {
+    //     std::shared_ptr<Cell> v = cells[i];
+
+    //     // If this is a free vertex
+    //     // with label A, add it to queue
+    //     if (v->isFree() && v->getStatus() == ASET) {
+    //         // v is not matched
+    //         zeros.push_back(std::weak_ptr<Cell>(v));
+    //         v->setDistance(0);
+
+    //     } else {
+    //         // Else set distance as infinite so that this vertex
+    //         // is considered next time
+    //         v->setDistance(INF);
+    //     }
+    // }
+
+    // while(!(zeros.empty() && ones.empty() && twos.empty())) { // TODO(Nintendroid1): Why?
+    //     while(zeros.empty()) {
+    //         temp = zeros;
+    //         zeros = ones;
+    //         ones = twos;
+    //         twos = temp;
+    //     }
+
+    //     std::shared_ptr<Cell> v = zeros.front().lock();
+    //     zeros.pop();
+
+    //     if (v->getDistance() > shortestDist) {
+    //         continue;
+    //     }
+
+    //     // Get all adjacent vertices of the dequeued vertex v
+    //     for (int i=0; i < static_cast<int>(edges.size()); i++) {
+    //         std::shared_ptr<Cell> u = std::get<0>(edges[i]).lock();
+
+    //         if (!v->isFree() && u == v->getMatch().lock()) {
+    //             continue;
+    //         }
+
+    //         int dist = std::min(u->getDistance(), v->getDistance());
+
+    //         if (!u->isFree()) {
+    //             std::shared_ptr<Cell> uMatch = u->getMatch().lock();
+    //             dist += std::min(u->getDistance(), uMatch->getDistance());
+    //         }
+            
+    //         int testDist = v->getDistance() + dist;
+    //         if ( testDist > shortestDist) {
+    //             continue;
+    //         }
+
+    //         if (u->isFree() ||  u->getMatch().lock()->getDistance() > testDist) {
+    //             if (!u->isFree()) {
+    //                 std::shared_ptr<Cell> uMatch = u->getMatch().lock();
+    //                 uMatch->setDistance(testDist);
+    //             }
+
+    //             if (dist == 0) {
+    //                 // zeros.push_back()
+    //             } else if {
+    //                 // ones.push_back()
+    //             } else {
+    //                 // two.push_back()
+    //             }
+    //         }
+
+    //     }
+    // }
+
+    // // If we could come back to NIL using alternating path of distinct
+    // // vertices then there is an augmenting path
+    // return (shortestDist != INF);
+    return true;
 }
 
 // Edges are (A, B)
@@ -158,7 +264,7 @@ bool Match::modDFS(std::weak_ptr<Cell> temp) {
         } else {  // Edge is not visited
             // Mark (v_k, v) as visited
             std::get<1>(edges[i]) = true;
-            visited.push_back(edges[i]);  //Edges in G
+            visited.push_back(edges[i]);  // Edges in G
         }
 
         // If v is in P
@@ -197,6 +303,40 @@ bool Match::modDFS(std::weak_ptr<Cell> temp) {
     return false;
 }
 
+bool Match::ffDFS(std::shared_ptr<Cell> v) {
+    // If unvisited edge going out of v_k
+    std::vector<std::tuple<std::weak_ptr<Cell>, bool>>
+        edges = v->getEdgesToA();
+
+    for (int i = 0; i < static_cast<int>(edges.size()); i++) {
+        std::shared_ptr<Cell> u = std::get<0>(edges[i]).lock();
+
+        // This edge is visited
+        if (std::get<1>(edges[i]) == true) {
+            continue;
+
+        } else {  // Edge is not visited
+            // Mark (v_k, v) as visited
+            std::get<1>(edges[i]) = true;
+            visited.push_back(edges[i]);  // Edges in G
+        }
+
+        if (u->isFree()) {
+            Match::createMatch(v, u);
+            return true;
+
+        } else {
+            std::shared_ptr<Cell> uMatch = u->getMatch().lock();
+                if (dfs(uMatch)) {
+                Match::createMatch(v, u);
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 // Forms a match between v and u and updates their capacities
 void Match::createMatch(std::shared_ptr<Cell> v,
     std::shared_ptr<Cell> u) {
@@ -209,11 +349,20 @@ void Match::createMatch(std::shared_ptr<Cell> v,
 }
 
 void Match::deleteEdges() {
-    for(int i = 0; i < static_cast<int>(visited.size()); i++) {
+    for (int i = 0; i < static_cast<int>(visited.size()); i++) {
         std::shared_ptr<Cell> e = std::get<0>(visited[i]).lock();
 
         if (std::find(P.begin(), P.end(), e) == P.end()) {
             visited.erase(visited.begin() + 1);
         }
     }
+}
+
+// Reset the visited vertices
+void Match::resetVisited() {
+    for(int i = 0; i < static_cast<int>(visited.size()); i++) {
+        std::get<1>(visited[i]) = false;
+        visited.erase(visited.begin() + i);
+    }
+    visited.clear();
 }
