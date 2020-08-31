@@ -254,3 +254,28 @@ TEST_CASE( "FordFulk", "[match]" ) {
     REQUIRE(cMatch->getWeightB() == g.getCells()[1]->getWeightB() );
     REQUIRE(cMatch->getCapacity() == g.getCells()[1]->getCapacity() );
 }
+
+TEST_CASE( "Augment Flow", "[match]" ) {
+    std::shared_ptr<Cell> c1 =  std::make_shared<Cell>();
+    c1->createCenter(0, 3, -1.0, -1.0, 2.0);
+    for(int i=0; i<10; i++)
+        c1->addVertex(A);
+
+    std::shared_ptr<Cell> c2 =  std::make_shared<Cell>();
+    c2->createCenter(3, 0, -1.0, -1.0, 2.0);
+    for(int i=0; i<7; i++)
+        c2->addVertex(B);
+
+    c1->setFoward(4);
+    c1->setBackward(3);
+    c2->setFoward(3);
+    c2->setBackward(3);
+
+    int bn = 3;
+    augmentFlow(c1, c2, bn);
+
+    REQUIRE(c1.getForward() = 7);
+    REQUIRE(c1.getBackward() = 0);
+    REQUIRE(c2.getForward() = 6);
+    REQUIRE(c2.getBackward() = 0);
+}

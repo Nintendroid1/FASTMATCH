@@ -34,6 +34,8 @@ class Cell {
     int weightA;  //# of Vertices in Cell with Label A
     int weightB;  //# of Vertices in Cell with Label B
     int capacity;
+    int forward;
+    int backward; // Flow
 
     Status status;
 
@@ -52,6 +54,8 @@ class Cell {
     void setMatch(std::weak_ptr<Cell> c);
     void setCapacity(int c);
     void setDistance(double d);
+    void setForward(int f);
+    void setBackward(int b);
 
     // Getters
     double getCenterX() const {return centerX;}
@@ -65,6 +69,8 @@ class Cell {
     int getWeightA() {return weightA;}
     int getWeightB() {return weightB;}
     int getCapacity() {return capacity;}
+    int getForward() {return forward;}
+    int getBackward() {return backward;}
 
     Status getStatus() {return status;}
 

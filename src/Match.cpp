@@ -348,6 +348,19 @@ void Match::createMatch(std::shared_ptr<Cell> v,
     v->setCapacity(newCap);
 }
 
+void Match::augmentFlow(std::shared_ptr<Cell> v,
+    std::shared_ptr<Cell> u, int bottleneck) {
+        int capacity = std::min(v->getWeightA(), u->getWeightB());
+
+        // Augment edge from A to B
+        v->setForward(v.getForward() + bottleneck);
+        v->setBackward(capacity - v.getForward());
+
+        // Augment edge from B to A
+        u->setBackward(u.getBackward() - bottleneck);
+        u->setForward(capacity - u.getBackward());
+}
+
 void Match::deleteEdges() {
     for (int i = 0; i < static_cast<int>(visited.size()); i++) {
         std::shared_ptr<Cell> e = std::get<0>(visited[i]).lock();

@@ -78,6 +78,14 @@ void Cell::setDistance(double d) {
     distance = d;
 }
 
+void Cell::setForward(int f) {
+    forward = f;
+}
+
+void Cell::setBackward(int b) {
+    backward = b;
+}
+
 bool compareCellX(Cell const& lhs, Cell const& rhs) {
     return lhs.getCenterX() < rhs.getCenterX();
 }

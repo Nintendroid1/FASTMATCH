@@ -47,6 +47,9 @@ class Match {
 
     // Getters
     std::vector<std::shared_ptr<Cell>> getModHKResult() {return cells;}
+
+    void augmentFlow(std::shared_ptr<Cell> v,
+      std::shared_ptr<Cell> u, int bottleneck);
 };
 
 #endif  // INCLUDE_MATCH_HPP_
