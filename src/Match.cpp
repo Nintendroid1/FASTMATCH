@@ -353,12 +353,8 @@ void Match::augmentFlow(std::shared_ptr<Cell> v,
         int capacity = std::min(v->getWeightA(), u->getWeightB());
 
         // Augment edge from A to B
-        v->setForward(v.getForward() + bottleneck);
-        v->setBackward(capacity - v.getForward());
-
-        // Augment edge from B to A
-        u->setBackward(u.getBackward() - bottleneck);
-        u->setForward(capacity - u.getBackward());
+        v->setForward(v->getForward() + bottleneck);
+        v->setBackward(capacity - v->getForward());
 }
 
 void Match::deleteEdges() {

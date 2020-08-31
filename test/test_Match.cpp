@@ -266,16 +266,20 @@ TEST_CASE( "Augment Flow", "[match]" ) {
     for(int i=0; i<7; i++)
         c2->addVertex(B);
 
-    c1->setFoward(4);
+    c1->setForward(4);
     c1->setBackward(3);
-    c2->setFoward(3);
-    c2->setBackward(3);
+
+    std::vector<std::shared_ptr<Cell>> cs;
+    cs.push_back(c1);
+    cs.push_back(c2);
+    
+    Match m(cs);
 
     int bn = 3;
-    augmentFlow(c1, c2, bn);
+    m.augmentFlow(c1, c2, bn);
 
-    REQUIRE(c1.getForward() = 7);
-    REQUIRE(c1.getBackward() = 0);
-    REQUIRE(c2.getForward() = 6);
-    REQUIRE(c2.getBackward() = 0);
+    REQUIRE(c1->getForward() == 7);
+    REQUIRE(c1->getBackward() == 0);
+
+    cs.clear();
 }
